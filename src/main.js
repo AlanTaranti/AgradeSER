@@ -20,6 +20,7 @@ Vue.use(Vuetify, {
     accent: colors.deepPurple.darken3,
 
     background: '#FFFAFA',
+    background_primary_lighten: colors.lightGreen.lighten5,
 
     error: colors.red.lighten1,
     info: colors.lightBlue.lighten1,
