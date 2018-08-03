@@ -6,7 +6,7 @@
     <input type="password" v-model="password" placeholder="Senha">
     <br>
     <button v-on:click="signUp">Cadastre-se</button>
-    <span>or go back to <router-link :to="{ name: 'Login' }">login</router-link>.</span>
+    <span>or go back to <router-link :to="{ name: 'login' }">login</router-link>.</span>
   </div>
 </template>
 
@@ -25,7 +25,7 @@
       signUp: function () {
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
           (user) => {
-            this.$router.push({name: 'Home'});
+            this.$router.push({name: 'home'});
           },
           (err) => {
             alert('Oops. ' + err.message)

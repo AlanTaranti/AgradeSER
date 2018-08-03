@@ -7,7 +7,7 @@
     <br>
     <button v-on:click="signIn">Entrar</button>
     <p>Não tem uma conta? Você pode
-      <router-link :to="{ name: 'SignUp' }">criar uma</router-link>
+      <router-link :to="{ name: 'signup' }">criar uma</router-link>
     </p>
   </div>
 </template>
@@ -27,7 +27,7 @@
       signIn: function () {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
-            this.$router.push({name: 'Home'});
+            this.$router.push({name: 'home'});
           },
           (err) => {
             alert('Oops. ' + err.message)
