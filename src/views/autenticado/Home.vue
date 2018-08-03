@@ -6,11 +6,17 @@
                      :data="relato.data.toDate()" :local="relato.local"/>
       </v-flex>
     </template>
+
+    <!-- FAB -->
+    <button-action
+      icone="fas fa-plus"
+      @botao-clicado="criarRelato"/>
   </v-container>
 </template>
 
 <script>
   import RelatoCard from '../../components/RelatoCard'
+  import ButtonAction from '../../components/ButtonAction'
 
   import db from '../../main'
   import firebase from 'firebase'
@@ -19,6 +25,7 @@
     name: "Home",
     components: {
       RelatoCard,
+      ButtonAction,
     },
     firestore() {
       return {}
@@ -33,6 +40,13 @@
         local: 'Campo Grande'
       },
     }),
+
+    methods: {
+      criarRelato(){
+        this.$router.push({name: 'home'});
+      }
+    },
+
     created() {
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
