@@ -56,13 +56,6 @@ firebase.auth().onAuthStateChanged(function (user) {
       components: {App},
       template: '<App/>',
 
-      firebase() {
-        return {
-          'usuario': db.collection('usuario').doc(user.uid),
-          'relatos': db.collection('usuario').doc(user.uid).collection('relatos')
-        }
-      },
-
       created() {
         this.$store.commit('drawerBreakpointEmTelaGrande', 1264);
       }
