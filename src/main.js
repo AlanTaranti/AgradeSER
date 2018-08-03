@@ -7,7 +7,7 @@ import Vuetify from 'vuetify'
 import VueFire from 'vuefire'
 import firebase from 'firebase'
 import 'vuetify/dist/vuetify.min.css'
-import store from '@/vuex/store';
+import store from './vuex/store';
 import '@fortawesome/fontawesome-free/css/all.css' // Ensure you are using css-loader
 import colors from 'vuetify/es5/util/colors'
 
