@@ -16,12 +16,15 @@ Vue.use(Vuetify, {
   iconfont: 'fa',
   theme: {
     primary: colors.lightGreen.darken3,
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107'
+    secondary: colors.lightGreen.darken1,
+    accent: colors.deepPurple.darken3,
+
+    background: '#FFFAFA',
+
+    error: colors.red.lighten1,
+    info: colors.lightBlue.lighten1,
+    success: colors.lightGreen.accent3,
+    warning: colors.yellow.darken1,
   }
 });
 

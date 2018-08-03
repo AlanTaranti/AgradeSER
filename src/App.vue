@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <v-app>
+  <v-app class="background">
     <router-view/>
   </v-app>
 </template>
