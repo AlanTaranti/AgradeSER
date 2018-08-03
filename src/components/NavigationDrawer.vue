@@ -85,7 +85,6 @@
             {icone: 'fas fa-user', texto: 'Pessoas', rota: 'people', desabilitar: true},
             {icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},
             {icone: 'place', texto: 'Locais', rota: 'places', desabilitar: true},
-            {icone: 'fas fa-book-open', texto: 'Diário da gratidão', rota: 'gratitude', desabilitar: true},
           ],
         },
         {
