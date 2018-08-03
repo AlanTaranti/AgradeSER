@@ -35,7 +35,7 @@
             v-for="filho in item.filhos"
             :key="filho.texto"
             :disabled="filho.desabilitar"
-            @click="!filho.desabilitar ? $router.push({'name': filho.rota}) : ''">
+            @click="onClickItemMenu(filho)">
             <v-list-tile-action v-if="filho.icone">
               <v-icon>{{ filho.icone }}</v-icon>
             </v-list-tile-action>
@@ -48,7 +48,7 @@
           v-else
           :disabled="item.desabilitar"
           :key="item.texto"
-          @click="!item.desabilitar ? $router.push({'name': item.rota}) : ''">
+          @click="onClickItemMenu(item)">
           <v-list-tile-action>
             <v-icon>{{ item.icone }}</v-icon>
           </v-list-tile-action>
@@ -66,6 +66,8 @@
 <script>
 
   import store from '../vuex/store';
+  import firebase from 'firebase';
+
 
   export default {
     name: 'drawer',
@@ -73,22 +75,22 @@
     data: () => ({
       drawerItens: [
         {cabecalho: 'Relatos'},
-        {icone: 'book', texto: 'Todos os relatos', rota: 'home', desabilitar: false},
+        {icone: 'fas fa-book', texto: 'Todos os relatos', rota: 'home', desabilitar: false},
         {
-          icone: 'keyboard_arrow_up',
-          iconeAlternativo: 'keyboard_arrow_down',
+          icone: 'fas fa-angle-up',
+          iconeAlternativo: 'fas fa-angle-down',
           texto: 'Cadernos',
           model: false,
           filhos: [
-            {icone: 'person', texto: 'Pessoas', rota: 'people', desabilitar: true},
-            {icone: 'favorite', texto: 'Emoções', rota: 'emotions', desabilitar: true},
+            {icone: 'fas fa-user', texto: 'Pessoas', rota: 'people', desabilitar: true},
+            {icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},
             {icone: 'place', texto: 'Locais', rota: 'places', desabilitar: true},
-            {icone: 'import_contacts', texto: 'Diário da gratidão', rota: 'gratitude', desabilitar: true},
+            {icone: 'fas fa-book-open', texto: 'Diário da gratidão', rota: 'gratitude', desabilitar: true},
           ],
         },
         {
-          icone: 'keyboard_arrow_up',
-          iconeAlternativo: 'keyboard_arrow_down',
+          icone: 'fas fa-angle-up',
+          iconeAlternativo: 'fas fa-angle-down',
           texto: 'Tags',
           model: false,
           filhos: [
@@ -96,8 +98,9 @@
           ],
         },
         {cabecalho: 'AgradeSER'},
-        {icone: 'settings', texto: 'Configurações', id: 'settings', desabilitar: true},
-        {icone: 'chat_bubble', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},
+        {icone: 'fas fa-cog', texto: 'Configurações', id: 'settings', desabilitar: true},
+        {icone: 'fas fa-comment-alt', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},
+        {icone: 'fas fa-sign-out-alt', texto: 'Sair', id: 'sair', desabilitar: false, action: 'logout'},
       ],
     }),
 
@@ -108,6 +111,28 @@
         },
         get(){
           return this.$store.getters.drawerMostrar;
+        }
+      }
+    },
+
+    methods: {
+      logout(){
+        firebase.auth().signOut().then(() => {
+          this.$router.push({'name': 'login'});
+        })
+      },
+
+      onClickItemMenu(item){
+        if (item.desabilitar){
+          return
+        }
+
+        if (item['action']){
+          this[item.action]();
+        }
+
+        if (item['rota']){
+          this.$router.push({'name': item.rota});
         }
       }
     },
