@@ -1,3 +1,13 @@
+<!--
+
+    Componente: Relato Card
+
+    Responsabilidade: Mostrar o resumo de um relato em um card
+
+    Restrições: Não deve ter conhecimento do banco de dados
+
+-->
+
 <template>
   <v-card raised hover color="white">
 
