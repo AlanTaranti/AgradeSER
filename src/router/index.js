@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from '@/views/autenticado/Home'
-import Estrutura from '@/views/autenticado/Estrutura'
-import Login from '@/views/Login'
-import SignUp from '@/views/SignUp'
+import Home from '../views/autenticado/Home'
+import Estrutura from '../views/autenticado/Estrutura'
+import Login from '../views/Login'
+import SignUp from '../views/SignUp'
 import firebase from 'firebase'
 
 Vue.use(Router);
@@ -27,7 +27,7 @@ const router = new Router({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login,
       meta: {
         authPage: true
@@ -35,7 +35,7 @@ const router = new Router({
     },
     {
       path: '/signup',
-      name: 'SignUp',
+      name: 'signup',
       component: SignUp,
       meta: {
         authPage: true
