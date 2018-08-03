@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Home from '../views/autenticado/Home'
 import Estrutura from '../views/autenticado/Estrutura'
+import Relato from '../views/autenticado/Relato'
 import Login from '../views/Login'
 import SignUp from '../views/SignUp'
 import firebase from 'firebase'
@@ -50,6 +51,16 @@ const router = new Router({
           path: '/home',
           name: 'home',
           component: Home,
+        },
+        {
+          path: '/relato/',
+          name: 'relato',
+          component: Relato,
+        },
+        {
+          path: '/relato/:id',
+          name: 'relato',
+          component: Relato,
         },
       ],
     },
