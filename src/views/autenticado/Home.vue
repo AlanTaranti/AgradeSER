@@ -3,7 +3,7 @@
     <template v-for="relato in relatos">
       <v-flex xs12>
         <relato-card class="mb-3" :id="relato.id" :titulo="relato.titulo" :conteudo="relato.conteudo"
-                     :data="relato.data.toDate()" :local="relato.local"/>
+                     :data="relato.data.toDate()" :local="relato.local.nome"/>
       </v-flex>
     </template>
 
