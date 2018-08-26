@@ -12,12 +12,12 @@
     "test": "npm run unit"
   },
   "dependencies": {
-    "firebase": "^5.3.0",
+    "firebase": "^5.4.1",
     "moment": "^2.22.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuefire": "^2.0.0-alpha.12",
-    "vuetify": "^1.0.0",
+    "vuefire": "^2.0.0-alpha.15",
+    "vuetify": "^1.1.14",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -60,14 +60,14 @@
     "ora": "^1.3.0",
     "phantomjs-prebuilt": "^2.1.15",
     "rimraf": "^2.6.2",
-    "semver": "^5.4.1",
+    "semver": "^5.5.1",
     "shelljs": "^0.7.8",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.14.0",
     "sw-precache-webpack-plugin": "^0.11.4",
     "uglify-es": "^3.1.3",
     "url-loader": "^0.6.2",
-    "vue-loader": "^13.3.0",
+    "vue-loader": "^13.7.3",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.7.1",
