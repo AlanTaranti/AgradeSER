@@ -101,7 +101,6 @@
           lat: null,
           lon: null,
         },
-        createdAt: null,
       }
     }),
 
@@ -154,13 +153,23 @@
       },
 
       salvarRelato(event) {
-        console.log(this.relato);
+
         this.relato.data = this.dataParaSalvar;
-        this.relato.createdAt = new Date();
-        this.dbRefs.relatosRef.add(this.relato).catch((error) => {
-          console.error('Erro ao adicionar um novo relato', error);
-          throw Error(error);
-        });
+
+        const relatoId = this.$route.params.id;
+        // Novo Relato
+        if (!relatoId){
+          this.relato.createdAt = new Date();
+          this.dbRefs.relatosRef.add(this.relato).catch((error) => {
+            console.error('Erro ao adicionar um novo relato', error);
+            throw Error(error);
+          });
+        }
+        // Update de Relato
+        else {
+          this.dbRefs.relatosRef.doc(relatoId).update(this.relato);
+        }
+
       },
 
       inicializarEscrita() {
