@@ -91,6 +91,7 @@
       },
       localizacaoUsuario: '',
       relato: {
+        id: null,
         data: null,
         titulo: null,
         conteudo: null,
@@ -105,7 +106,7 @@
     }),
 
     computed: {
-      dataParaSalvar(){
+      dataParaSalvar() {
         return firebase.firestore.Timestamp.fromDate(moment(this.models.datePicker).toDate());
       },
       diaDoRelato() {
@@ -129,6 +130,20 @@
         this.relato.local.lon = place.geometry.location.lng();
       },
 
+      setRelato(relato) {
+        // Set Relato
+        this.relato.id = relato.id;
+        this.relato.data = relato.data().data;
+        this.relato.titulo = relato.data().titulo;
+        this.relato.conteudo = relato.data().conteudo;
+        this.relato.local = relato.data().local;
+        this.relato.createdAt = relato.data().createdAt;
+
+        // Ajustes models
+        this.models.localizacao = this.relato.local.nome;
+        this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
+      },
+
       coletarLocalizacaoUsuario() {
         const self = this;
         if ('geolocation' in navigator) {
@@ -146,30 +161,50 @@
           console.error('Erro ao adicionar um novo relato', error);
           throw Error(error);
         });
+      },
+
+      inicializarEscrita() {
+        this.coletarLocalizacaoUsuario();
+
+        // Adicionado autocompletar de Localização
+        let autocompleteLocation = this.$refs.autocompleteLocation.$refs.input;
+        const google = window.google;
+        this.autocompleteLocation = new google.maps.places.Autocomplete(
+          (autocompleteLocation),
+          {
+            types: ['geocode'],
+            language: ['pt-BR'],
+            location: this.localizacaoUsuario,
+            radius: 1000
+          }
+        );
+
+        // Listener de local
+        this.autocompleteLocation.addListener('place_changed', () => {
+          this.setPlace(this.autocompleteLocation.getPlace());
+        });
+      },
+
+      getRelato(relatoId) {
+        this.dbRefs.relatosRef.doc(relatoId).get()
+          .then(this.setRelato)
+          .catch(function (error) {
+            console.error('Falha em obter relato:', error);
+          });
       }
 
     },
 
     mounted() {
-      this.coletarLocalizacaoUsuario();
 
-      // Adicionado autocompletar de Localização
-      let autocompleteLocation = this.$refs.autocompleteLocation.$refs.input;
-      const google = window.google;
-      this.autocompleteLocation = new google.maps.places.Autocomplete(
-        (autocompleteLocation),
-        {
-          types: ['geocode'],
-          language: ['pt-BR'],
-          location: this.localizacaoUsuario,
-          radius: 1000
-        }
-      );
-
-      // Listener de local
-      this.autocompleteLocation.addListener('place_changed', () => {
-        this.setPlace(this.autocompleteLocation.getPlace());
-      })
+      // Se houver um parametro de id, trata ele
+      const relatoId = this.$route.params.id;
+      if (relatoId) {
+        this.getRelato(relatoId);
+      }
+      else {
+        this.inicializarEscrita();
+      }
     },
 
     created() {
