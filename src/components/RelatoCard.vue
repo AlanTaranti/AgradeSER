@@ -64,16 +64,17 @@
     data: () => ({
       relatoBotoesRodape: [
         {
+          acao: 'LER',
           icone: 'fas fa-book-open',
-          desabilitado: true,
+          desabilitado: false,
         },
         {
-          id: 'EDITAR',
+          acao: 'EDITAR',
           icone: 'fas fa-edit',
           desabilitado: true,
         },
         {
-          id: 'REMOVER',
+          acao: 'REMOVER',
           icone: 'fas fa-trash-alt',
           desabilitado: true,
         },
