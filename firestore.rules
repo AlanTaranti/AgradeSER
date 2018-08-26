@@ -33,26 +33,7 @@ service cloud.firestore {
         // Autenticação
         //
 
-        if request.auth.uid == usuario &&
-
-        //
-        // Validação dos campos
-        //
-
-        // Campos obrigatórios
-        request.resource.data.keys().hasAll(["conteudo", "intensidadeDaEmocao", "createdAt"]) &&
-        request.resource.data.size() == 3 &&
-
-        // Validação do conteudo
-        request.resource.data.conteudo is string &&
-
-        // Validação da instensidade da emoção
-        request.resource.data.intensidadeDaEmocao is number &&
-        request.resource.data.intensidadeDaEmocao >= 0 &&
-        request.resource.data.intensidadeDaEmocao <= 100 &&
-
-        // Validação da data de criação
-        request.resource.data.createdAt is timestamp;
+        if request.auth.uid == usuario;
 
     }
   }
