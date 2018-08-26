@@ -39,7 +39,21 @@
       </v-menu>
     </v-flex>
 
+    <!-- Título -->
+    <v-flex xs12 sm6 md4 style="margin-top: 10px;">
+      <v-text-field
+        placeholder="Título"
+        v-model="relato.titulo"
+        single-line/>
+    </v-flex>
 
+    <!-- Conteúdo -->
+    <v-flex x12 sm6 md4>
+      <v-textarea
+        placeholder="Conteúdo"
+        v-model="relato.conteudo"
+      />
+    </v-flex>
   </v-container>
 </template>
 
@@ -56,6 +70,9 @@
       models: {
         datePicker: moment().format('YYYY-MM-DD'),
         menuDatePicker: false,
+      relato: {
+        titulo: null,
+        conteudo: null,
       }
     }),
 
