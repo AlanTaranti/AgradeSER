@@ -64,15 +64,15 @@
     props: ['id', 'titulo', 'conteudo', 'data', 'local'],
     data: () => ({
       relatoBotoesRodape: [
-        {
+        /*{
           acao: 'LER',
           icone: 'fas fa-book-open',
           desabilitado: false,
-        },
+        },*/
         {
           acao: 'EDITAR',
           icone: 'fas fa-edit',
-          desabilitado: true,
+          desabilitado: false,
         },
         {
           acao: 'REMOVER',
@@ -100,6 +100,7 @@
             this.$router.push({ path: `/relato/${this.id}`});
             break;
           case 'EDITAR':
+            this.$router.push({ path: `/relato/${this.id}`});
             break;
           case 'EXCLUIR':
             break;
