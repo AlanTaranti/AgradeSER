@@ -40,7 +40,8 @@
       <v-layout row justify-space-around>
         <template v-for="botaoRodape in relatoBotoesRodape">
           <v-flex class="text-xs-center">
-            <v-btn flat :disabled="botaoRodape.desabilitado" @click="acaoRelato(botaoRodape.id)">
+            <v-btn flat :disabled="botaoRodape.desabilitado"
+                   @click="!botaoRodape.desabilitar ? acaoRelato(botaoRodape.acao) : ''">
               <v-icon color="iconLight">
                 {{ botaoRodape.icone }}
               </v-icon>
@@ -93,9 +94,20 @@
 
     methods: {
 
-      acaoRelato(acaoId) {
-
+      acaoRelato(acao) {
+        switch(acao) {
+          case 'LER':
+            this.$router.push({ path: `/relato/${this.id}`});
+            break;
+          case 'EDITAR':
+            break;
+          case 'EXCLUIR':
+            break;
+          default:
+            break;
+        }
       }
+
     },
   }
 </script>
