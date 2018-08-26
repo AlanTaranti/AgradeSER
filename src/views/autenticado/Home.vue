@@ -32,13 +32,6 @@
     },
     data: () => ({
       relatos: [],
-      relato: {
-        id: 1,
-        titulo: 'Novas Aventuras',
-        conteudo: 'Hoje exploramos a Malásia',
-        data: new Date(),
-        local: 'Campo Grande'
-      },
     }),
 
     methods: {
