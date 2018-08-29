@@ -96,6 +96,7 @@
     data: () => ({
       dbRefs: {
         relatosRef: null,
+        localizacoesRef: null,
       },
       relatoCarregado: false,
       models: {
@@ -169,6 +170,27 @@
         }
       },
 
+      mostrarToasterSalvarERedirectHome(){
+        this.$store.commit('toasterMensagem', 'Relato salvo com sucesso!');
+        this.$store.commit('toasterColor', 'success');
+        this.$store.commit('toasterMostrar', true);
+        this.$router.push({name: 'home'});
+      },
+
+      mostrarToasterAtualizarERedirectHome(){
+        this.$store.commit('toasterMensagem', 'Relato atualizado com sucesso!');
+        this.$store.commit('toasterColor', 'success');
+        this.$store.commit('toasterMostrar', true);
+        this.$router.push({name: 'home'});
+      },
+
+      mostrarToasterErro(){
+        this.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
+        this.$store.commit('toasterColor', 'error');
+        this.$store.commit('toasterMostrar', true);
+        this.$router.push({name: 'home'});
+      },
+
       salvarRelato(event) {
 
         this.relato.data = this.dataParaSalvar;
@@ -180,32 +202,28 @@
           this.relato.createdAt = new Date();
           this.dbRefs.relatosRef.add(this.relato)
             .then(function () {
-              self.$store.commit('toasterMensagem', 'Relato salvo com sucesso!');
-              self.$store.commit('toasterColor', 'success');
-              self.$store.commit('toasterMostrar', true);
-              this.$router.push({name: 'home'});
+              self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
+                .then(function () {
+                  self.mostrarToasterSalvarERedirectHome()
+                });
             })
             .catch((error) => {
               console.error('Erro ao adicionar um novo relato', error);
-              self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
-              self.$store.commit('toasterColor', 'error');
-              self.$store.commit('toasterMostrar', true);
+              self.mostrarToasterErro();
             });
         }
         // Update de Relato
         else {
           this.dbRefs.relatosRef.doc(relatoId).update(this.relato)
             .then(function () {
-              self.$store.commit('toasterMensagem', 'Relato atualizado com sucesso!');
-              self.$store.commit('toasterColor', 'success');
-              self.$store.commit('toasterMostrar', true);
-              self.$router.push({name: 'home'});
+              self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
+                .then(function () {
+                  self.mostrarToasterAtualizarERedirectHome()
+                });
             })
             .catch(function (error) {
               console.error('Erro ao adicionar um novo relato', error);
-              self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
-              self.$store.commit('toasterColor', 'error');
-              self.$store.commit('toasterMostrar', true);
+              self.mostrarToasterErro();
             });
         }
 
@@ -260,6 +278,7 @@
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
       this.dbRefs.relatosRef = userRef.collection('relatos');
+      this.dbRefs.localizacoesRef = userRef.collection('localizacoes');
     }
   }
 </script>
