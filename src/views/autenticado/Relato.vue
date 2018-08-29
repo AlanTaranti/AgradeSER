@@ -1,70 +1,82 @@
 <template>
   <v-container fluid>
 
-    <!-- Date Picker -->
-    <v-flex xs12 sm6 md4>
-      <v-menu
-        v-model="models.menuDatePicker"
-        absolute
-        offset-y
-        lazy
-        origin="center center"
-        transition="scale-transition"
-        style="width: 100%;">
+    <div class="text-xs-center" v-show="!relatoCarregado">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate>
+      </v-progress-circular>
+    </div>
 
-        <v-card slot="activator" style="width: 100%;">
-          <v-layout justify-space-between row fill-height>
+    <div v-show="relatoCarregado">
+      <!-- Date Picker -->
+      <v-flex xs12 sm6 md4>
+        <v-menu
+          v-model="models.menuDatePicker"
+          absolute
+          offset-y
+          lazy
+          origin="center center"
+          transition="scale-transition"
+          style="width: 100%;">
 
-            <!-- Dia do Mês -->
-            <v-flex xs3>
-              <v-card-text align-center class="center-content-vh" style="height: 100%;">
-                <span>{{ diaDoRelato }}</span>
-              </v-card-text>
-            </v-flex>
+          <v-card slot="activator" style="width: 100%;">
+            <v-layout justify-space-between row fill-height>
 
-            <v-flex xs9>
-              <v-card-text class="text-xs-left">
-                <!-- Dia da Semana-->
-                <span class="text-xs-left">{{ diaDaSemanaDoRelato }}</span>
-                <br>
-                <!-- Mẽs e Ano -->
-                <span class="text-xs-left">{{ mesEAnoDoRelato  }}</span>
-              </v-card-text>
-            </v-flex>
-          </v-layout>
-        </v-card>
+              <!-- Dia do Mês -->
+              <v-flex xs3>
+                <v-card-text align-center class="center-content-vh" style="height: 100%;">
+                  <span>{{ diaDoRelato }}</span>
+                </v-card-text>
+              </v-flex>
 
-        <v-date-picker v-model="models.datePicker"></v-date-picker>
+              <v-flex xs9>
+                <v-card-text class="text-xs-left">
+                  <!-- Dia da Semana-->
+                  <span class="text-xs-left">{{ diaDaSemanaDoRelato }}</span>
+                  <br>
+                  <!-- Mẽs e Ano -->
+                  <span class="text-xs-left">{{ mesEAnoDoRelato  }}</span>
+                </v-card-text>
+              </v-flex>
+            </v-layout>
+          </v-card>
 
-      </v-menu>
-    </v-flex>
+          <v-date-picker v-model="models.datePicker"></v-date-picker>
 
-    <!-- Título -->
-    <v-flex xs12 sm6 md4 style="margin-top: 10px;">
+        </v-menu>
+      </v-flex>
+
+      <!-- Título -->
+      <v-flex xs12 sm6 md4 style="margin-top: 10px;">
+        <v-text-field
+          placeholder="Título"
+          v-model="relato.titulo"
+          single-line/>
+      </v-flex>
+
+      <!-- Conteúdo -->
+      <v-flex x12 sm6 md4>
+        <v-textarea
+          placeholder="Conteúdo"
+          v-model="relato.conteudo"
+        />
+      </v-flex>
+
+      <!-- Localização -->
       <v-text-field
-        placeholder="Título"
-        v-model="relato.titulo"
-        single-line/>
-    </v-flex>
-
-    <!-- Conteúdo -->
-    <v-flex x12 sm6 md4>
-      <v-textarea
-        placeholder="Conteúdo"
-        v-model="relato.conteudo"
+        v-model="models.localizacao"
+        placeholder="Local"
+        prepend-icon="place"
+        ref="autocompleteLocation"
       />
-    </v-flex>
 
-    <!-- Localização -->
-    <v-text-field
-      v-model="models.localizacao"
-      placeholder="Local"
-      prepend-icon="place"
-      ref="autocompleteLocation"
-    />
+      <!-- Salvar -->
+      <v-btn color="success" v-on:click="salvarRelato">Salvar</v-btn>
 
-    <!-- Salvar -->
-    <v-btn color="success" v-on:click="salvarRelato">Salvar</v-btn>
+    </div>
 
   </v-container>
 </template>
@@ -83,7 +95,7 @@
       dbRefs: {
         relatosRef: null,
       },
-      relatos: [],
+      relatoCarregado: false,
       models: {
         datePicker: moment().format('YYYY-MM-DD'),
         menuDatePicker: false,
@@ -141,6 +153,9 @@
         // Ajustes models
         this.models.localizacao = this.relato.local.nome;
         this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
+
+        // Mostrar relato
+        this.relatoCarregado = true;
       },
 
       coletarLocalizacaoUsuario() {
@@ -158,7 +173,7 @@
 
         const relatoId = this.$route.params.id;
         // Novo Relato
-        if (!relatoId){
+        if (!relatoId) {
           this.relato.createdAt = new Date();
           this.dbRefs.relatosRef.add(this.relato).catch((error) => {
             console.error('Erro ao adicionar um novo relato', error);
@@ -212,6 +227,7 @@
         this.getRelato(relatoId);
       }
       else {
+        this.relatoCarregado = true;
         this.inicializarEscrita();
       }
     },
