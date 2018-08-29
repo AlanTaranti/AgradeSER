@@ -64,11 +64,6 @@
     props: ['id', 'titulo', 'conteudo', 'data', 'local'],
     data: () => ({
       relatoBotoesRodape: [
-        /*{
-          acao: 'LER',
-          icone: 'fas fa-book-open',
-          desabilitado: false,
-        },*/
         {
           acao: 'EDITAR',
           icone: 'fas fa-edit',
