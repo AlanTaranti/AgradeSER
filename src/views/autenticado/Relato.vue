@@ -74,7 +74,7 @@
       />
 
       <!-- Salvar -->
-      <v-btn color="success" v-on:click="salvarRelato">Salvar</v-btn>
+      <v-btn color="primary" v-on:click="salvarRelato">Salvar</v-btn>
 
     </div>
 
@@ -86,11 +86,13 @@
   import moment from 'moment';
   import db from '../../main'
   import firebase from 'firebase'
+  import store from '../../vuex/store';
 
   moment.locale('pt-br');
 
   export default {
     name: "Relato",
+    store: store,
     data: () => ({
       dbRefs: {
         relatosRef: null,
@@ -170,19 +172,41 @@
       salvarRelato(event) {
 
         this.relato.data = this.dataParaSalvar;
+        const self = this;
 
         const relatoId = this.$route.params.id;
         // Novo Relato
         if (!relatoId) {
           this.relato.createdAt = new Date();
-          this.dbRefs.relatosRef.add(this.relato).catch((error) => {
-            console.error('Erro ao adicionar um novo relato', error);
-            throw Error(error);
-          });
+          this.dbRefs.relatosRef.add(this.relato)
+            .then(function () {
+              self.$store.commit('toasterMensagem', 'Relato salvo com sucesso!');
+              self.$store.commit('toasterColor', 'success');
+              self.$store.commit('toasterMostrar', true);
+              this.$router.push({name: 'home'});
+            })
+            .catch((error) => {
+              console.error('Erro ao adicionar um novo relato', error);
+              self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
+              self.$store.commit('toasterColor', 'error');
+              self.$store.commit('toasterMostrar', true);
+            });
         }
         // Update de Relato
         else {
-          this.dbRefs.relatosRef.doc(relatoId).update(this.relato);
+          this.dbRefs.relatosRef.doc(relatoId).update(this.relato)
+            .then(function () {
+              self.$store.commit('toasterMensagem', 'Relato atualizado com sucesso!');
+              self.$store.commit('toasterColor', 'success');
+              self.$store.commit('toasterMostrar', true);
+              self.$router.push({name: 'home'});
+            })
+            .catch(function (error) {
+              console.error('Erro ao adicionar um novo relato', error);
+              self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
+              self.$store.commit('toasterColor', 'error');
+              self.$store.commit('toasterMostrar', true);
+            });
         }
 
       },
