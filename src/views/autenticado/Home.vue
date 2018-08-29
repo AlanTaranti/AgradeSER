@@ -43,7 +43,7 @@
     created() {
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
-      const relatosRef = userRef.collection('relatos').orderBy('createdAt');
+      const relatosRef = userRef.collection('relatos').orderBy('createdAt', 'desc');
 
       this.$bind('relatos', relatosRef);
     }
