@@ -14,6 +14,11 @@ const store = new Vuex.Store({
     },
     toolbar: {
       toolbarIconeEsquerdaClicado: false
+    },
+    toaster: {
+      toasterMostrar: false,
+      toasterMensagem: '',
+      toasterColor: 'primary',
     }
   },
 
@@ -21,6 +26,9 @@ const store = new Vuex.Store({
     drawerMostrar: state => state.navigation.drawerMostrar,
     drawerBreakpointEmTelaGrande: state => state.layout.drawerBreakpointEmTelaGrande,
     toolbarIconeEsquerdaClicado: state => state.toolbar.toolbarIconeEsquerdaClicado,
+    toasterMostrar: state => state.toaster.toasterMostrar,
+    toasterMensagem: state => state.toaster.toasterMensagem,
+    toasterColor: state => state.toaster.toasterColor,
   },
 
   mutations: {
@@ -35,7 +43,16 @@ const store = new Vuex.Store({
     },
     toolbarIconeEsquerdaClicado: (state, toolbarIconeEsquerdaClicado) => {
       state.toolbar.toolbarIconeEsquerdaClicado = toolbarIconeEsquerdaClicado;
-    }
+    },
+    toasterMostrar: (state, toasterMostrar) => {
+      state.toaster.toasterMostrar = toasterMostrar;
+    },
+    toasterMensagem: (state, toasterMensagem) => {
+      state.toaster.toasterMensagem = toasterMensagem;
+    },
+    toasterColor: (state, toasterColor) => {
+      state.toaster.toasterColor = toasterColor;
+    },
   },
 });
 
