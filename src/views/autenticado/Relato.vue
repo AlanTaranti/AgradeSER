@@ -66,12 +66,35 @@
       </v-flex>
 
       <!-- Localização -->
-      <v-text-field
-        v-model="models.localizacao"
-        placeholder="Local"
-        prepend-icon="place"
-        ref="autocompleteLocation"
-      />
+      <v-flex x12 sm6 md4>
+        <v-text-field
+          v-model="models.localizacao"
+          placeholder="Local"
+          prepend-icon="place"
+          ref="autocompleteLocation"
+        />
+      </v-flex>
+
+      <!-- Selecionar Pessoas -->
+      <v-flex xs12 sm6 md4>
+        <v-combobox
+          placeholder="Quem estava com você?"
+          chips
+          multiple
+          prepend-icon="person"
+          append-icon=""
+          v-model="models.pessoas"
+          style="text-transform: capitalize;">
+          <template slot="selection" slot-scope="data">
+            <v-chip
+              close
+              @input="pessoaRemover(data.item)"
+              :selected="data.selected">
+              <strong>{{ data.item }}</strong>&nbsp;
+            </v-chip>
+          </template>
+        </v-combobox>
+      </v-flex>
 
       <!-- Salvar -->
       <v-btn color="primary" v-on:click="salvarRelato">Salvar</v-btn>
@@ -84,6 +107,7 @@
 <script>
 
   import moment from 'moment';
+  import md5 from 'blueimp-md5'
   import db from '../../main'
   import firebase from 'firebase'
   import store from '../../vuex/store';
@@ -97,12 +121,15 @@
       dbRefs: {
         relatosRef: null,
         localizacoesRef: null,
+        pessoasRef: null,
+        tagsRef: null,
       },
       relatoCarregado: false,
       models: {
         datePicker: moment().format('YYYY-MM-DD'),
         menuDatePicker: false,
-        localizacao: ''
+        localizacao: '',
+        pessoas: [],
       },
       localizacaoUsuario: '',
       relato: {
@@ -110,6 +137,7 @@
         data: null,
         titulo: null,
         conteudo: null,
+        pessoas: null,
         local: {
           id: null,
           nome: null,
@@ -136,6 +164,11 @@
 
     methods: {
 
+      pessoaRemover(item) {
+        this.relato.pessoas.splice(this.relato.pessoas.indexOf(item), 1);
+        this.relato.pessoas = [...this.relato.pessoas];
+      },
+
       setPlace(place) {
         this.models.localizacao = place.name;
         this.relato.local.id = place.place_id;
@@ -152,6 +185,7 @@
         this.relato.conteudo = relato.data().conteudo;
         this.relato.local = relato.data().local;
         this.relato.createdAt = relato.data().createdAt;
+        this.relato.pessoas = relato.data().pessoas;
 
         // Ajustes models
         this.models.localizacao = this.relato.local.nome;
@@ -170,21 +204,21 @@
         }
       },
 
-      mostrarToasterSalvarERedirectHome(){
+      mostrarToasterSalvarERedirectHome() {
         this.$store.commit('toasterMensagem', 'Relato salvo com sucesso!');
         this.$store.commit('toasterColor', 'success');
         this.$store.commit('toasterMostrar', true);
         this.$router.push({name: 'home'});
       },
 
-      mostrarToasterAtualizarERedirectHome(){
+      mostrarToasterAtualizarERedirectHome() {
         this.$store.commit('toasterMensagem', 'Relato atualizado com sucesso!');
         this.$store.commit('toasterColor', 'success');
         this.$store.commit('toasterMostrar', true);
         this.$router.push({name: 'home'});
       },
 
-      mostrarToasterErro(){
+      mostrarToasterErro() {
         this.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
         this.$store.commit('toasterColor', 'error');
         this.$store.commit('toasterMostrar', true);
@@ -194,9 +228,11 @@
       salvarRelato(event) {
 
         this.relato.data = this.dataParaSalvar;
+        this.relato.pessoas = this.pessoasFormatadasParaFirebase();
         const self = this;
 
         const relatoId = this.$route.params.id;
+        console.log(this.relato);
         // Novo Relato
         if (!relatoId) {
           this.relato.createdAt = new Date();
@@ -204,6 +240,9 @@
             .then(function () {
               self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
                 .then(function () {
+                  Object.keys(self.relato.pessoas).forEach(function (key) {
+                    self.dbRefs.pessoasRef.doc(md5(key)).set({nome: key});
+                  });
                   self.mostrarToasterSalvarERedirectHome()
                 });
             })
@@ -257,7 +296,22 @@
           .catch(function (error) {
             console.error('Falha em obter relato:', error);
           });
-      }
+      },
+
+      pessoasFormatadasParaFirebase() {
+        let formatado = {};
+
+        this.models.pessoas.forEach(function (pessoa) {
+          const pessoaSplited = value.split(' ');
+          pessoaSplited.forEach(function (value, index, array) {
+            pessoaSplited[index] = value.charAt(0).toUpperCase() + value.slice(1);
+          });
+          const pessoaCapitalizada = pessoaSplited.join(' ');
+          formatado[pessoaCapitalizada] = true;
+        });
+
+        return formatado;
+      },
 
     },
 
@@ -279,6 +333,8 @@
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
       this.dbRefs.relatosRef = userRef.collection('relatos');
       this.dbRefs.localizacoesRef = userRef.collection('localizacoes');
+      this.dbRefs.pessoasRef = userRef.collection('pessoas');
+      this.dbRefs.tagsRef = userRef.collection('tags');
     }
   }
 </script>

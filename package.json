@@ -12,6 +12,7 @@
     "test": "npm run unit"
   },
   "dependencies": {
+    "blueimp-md5": "^2.10.0",
     "firebase": "^5.4.1",
     "moment": "^2.22.2",
     "vue": "^2.5.2",
