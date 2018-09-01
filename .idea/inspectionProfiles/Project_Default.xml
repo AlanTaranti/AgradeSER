@@ -1,10 +1,20 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="slot-scope" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="11">
+          <list size="13">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -16,6 +26,8 @@
             <item index="8" class="java.lang.String" itemvalue="v-card-text" />
             <item index="9" class="java.lang.String" itemvalue="v-snackbar" />
             <item index="10" class="java.lang.String" itemvalue="toaster" />
+            <item index="11" class="java.lang.String" itemvalue="v-chip" />
+            <item index="12" class="java.lang.String" itemvalue="v-btn" />
           </list>
         </value>
       </option>
