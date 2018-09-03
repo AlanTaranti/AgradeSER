@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '../views/autenticado/Home'
 import Estrutura from '../views/autenticado/Estrutura'
 import Relato from '../views/autenticado/Relato'
+import Caderno from '../views/autenticado/Caderno'
 import Login from '../views/Login'
 import SignUp from '../views/SignUp'
 import firebase from 'firebase'
@@ -61,6 +62,11 @@ const router = new Router({
           path: '/relato/:id',
           name: 'relato',
           component: Relato,
+        },
+        {
+          path: '/cadernos/:caderno',
+          name: 'caderno',
+          component: Caderno,
         },
       ],
     },
