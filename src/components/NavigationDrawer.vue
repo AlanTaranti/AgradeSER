@@ -83,11 +83,11 @@
           model: false,
           filhos: [
             {icone: 'fas fa-user', texto: 'Pessoas', rota: {path: 'cadernos', urlparam: 'pessoas'}, desabilitar: false},
-            {icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},
+            /*{icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},*/
             {icone: 'place', texto: 'Locais', rota: 'places', desabilitar: true},
           ],
         },
-        {
+        /*{
           icone: 'fas fa-angle-up',
           iconeAlternativo: 'fas fa-angle-down',
           texto: 'Tags',
@@ -95,10 +95,10 @@
           filhos: [
             {icone: 'add', texto: 'Adicionar', id: 'tag_add', desabilitar: true},
           ],
-        },
+        },*/
         {cabecalho: 'AgradeSER'},
-        {icone: 'fas fa-cog', texto: 'Configurações', id: 'settings', desabilitar: true},
-        {icone: 'fas fa-comment-alt', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},
+        /*{icone: 'fas fa-cog', texto: 'Configurações', id: 'settings', desabilitar: true},*/
+        /*{icone: 'fas fa-comment-alt', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},*/
         {icone: 'fas fa-sign-out-alt', texto: 'Sair', id: 'sair', desabilitar: false, action: 'logout'},
       ],
     }),
