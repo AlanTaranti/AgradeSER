@@ -72,8 +72,8 @@
       dialogRemover: false,
       relatoBotoesRodape: [
         {
-          acao: 'EDITAR',
-          icone: 'fas fa-edit',
+          acao: 'LER',
+          icone: 'fas fa-book-open',
           desabilitado: true,
         },
         {
