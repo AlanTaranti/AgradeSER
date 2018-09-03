@@ -178,6 +178,7 @@
       },
 
       setRelato(relato) {
+        const self = this;
         // Set Relato
         this.relato.id = relato.id;
         this.relato.data = relato.data().data;
@@ -190,6 +191,9 @@
         // Ajustes models
         this.models.localizacao = this.relato.local.nome;
         this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
+        Object.keys(this.relato.pessoas).forEach(function (pessoa) {
+          self.models.pessoas.push(pessoa);
+        });
 
         // Mostrar relato
         this.relatoCarregado = true;
@@ -302,7 +306,7 @@
         let formatado = {};
 
         this.models.pessoas.forEach(function (pessoa) {
-          const pessoaSplited = value.split(' ');
+          const pessoaSplited = pessoa.split(' ');
           pessoaSplited.forEach(function (value, index, array) {
             pessoaSplited[index] = value.charAt(0).toUpperCase() + value.slice(1);
           });
