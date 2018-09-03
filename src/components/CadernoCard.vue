@@ -76,11 +76,13 @@
           icone: 'fas fa-book-open',
           desabilitado: true,
         },
+        /*
         {
           acao: 'EXCLUIR',
           icone: 'fas fa-trash-alt',
           desabilitado: true,
         },
+        */
       ],
     }),
 
