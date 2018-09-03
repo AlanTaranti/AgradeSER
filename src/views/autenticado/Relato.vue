@@ -229,7 +229,7 @@
         this.$router.push({name: 'home'});
       },
 
-      salvarRelato(event) {
+      salvarRelato() {
 
         this.relato.data = this.dataParaSalvar;
         this.relato.pessoas = this.pessoasFormatadasParaFirebase();
@@ -307,7 +307,7 @@
 
         this.models.pessoas.forEach(function (pessoa) {
           const pessoaSplited = pessoa.split(' ');
-          pessoaSplited.forEach(function (value, index, array) {
+          pessoaSplited.forEach(function (value, index) {
             pessoaSplited[index] = value.charAt(0).toUpperCase() + value.slice(1);
           });
           const pessoaCapitalizada = pessoaSplited.join(' ');
@@ -333,6 +333,7 @@
     },
 
     created() {
+      this.$store.commit('toolbarTitulo', 'Relato');
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
       this.dbRefs.relatosRef = userRef.collection('relatos');
