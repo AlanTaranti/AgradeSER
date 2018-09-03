@@ -20,7 +20,7 @@
       data: () => ({
         iconeEsquerda: {
           icone: 'fas fa-search',
-          mostrar: true,
+          mostrar: false,
         },
       }),
       computed: {
