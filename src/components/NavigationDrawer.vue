@@ -84,7 +84,7 @@
           filhos: [
             {icone: 'fas fa-user', texto: 'Pessoas', rota: {path: 'cadernos', urlparam: 'pessoas'}, desabilitar: false},
             /*{icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},*/
-            {icone: 'place', texto: 'Locais', rota: 'places', desabilitar: true},
+            {icone: 'place', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
           ],
         },
         /*{
