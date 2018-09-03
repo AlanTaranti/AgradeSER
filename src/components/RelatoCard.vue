@@ -170,4 +170,10 @@
     width: 100%;
   }
 
+  @media only screen and (max-width: 959px) {
+    .container {
+      padding: 0;
+    }
+  }
+
 </style>
