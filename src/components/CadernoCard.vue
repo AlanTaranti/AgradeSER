@@ -74,7 +74,7 @@
         {
           acao: 'LER',
           icone: 'fas fa-book-open',
-          desabilitado: true,
+          desabilitado: false,
         },
         /*
         {
@@ -108,13 +108,7 @@
       acaoCard(acao) {
         switch (acao) {
           case 'LER':
-            this.$router.push({path: `/relato/${this.id}`});
-            break;
-          case 'EDITAR':
-            this.$router.push({path: `/relato/${this.id}`});
-            break;
-          case 'EXCLUIR':
-            this.dialogRemover = true;
+            this.$router.push({path: `/cadernos/${this.tipo}/${btoa(this.titulo)}`});
             break;
           default:
             break;
