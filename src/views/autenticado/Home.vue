@@ -32,21 +32,63 @@
     },
     data: () => ({
       relatos: [],
+      dbRefs: {
+        relatosRef: null,
+      },
     }),
 
     methods: {
-      criarRelato(){
+      criarRelato() {
         this.$router.push({name: 'relato'});
+      },
+
+      loadRelatos() {
+        this.relatos = [];
+        const caderno = this.$route.params.caderno;
+        let ref = null;
+
+        if (!caderno) {
+          this.$store.commit('toolbarTitulo', 'AgradeSER');
+          ref = this.dbRefs.relatosRef;
+        }
+        else {
+          const filtro = this.$route.params.filtro;
+
+          const cadernoCapitalized = caderno.charAt(0).toUpperCase() + caderno.slice(1);
+
+          const filtroDecodificado = atob(filtro);
+
+          if (caderno !== 'local') {
+            this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
+
+            ref = this.dbRefs.relatosRef.where([caderno, filtroDecodificado].join('.'), '==', true);
+          }
+          else {
+            this.$store.commit('toolbarTitulo', filtroDecodificado);
+            ref = this.dbRefs.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
+          }
+        }
+
+        ref.orderBy('createdAt', 'desc');
+
+        this.$bind('relatos', ref);
+      }
+    },
+
+    watch: {
+      $route(to, from) {
+        if (from.name === 'home') {
+          this.loadRelatos();
+        }
       }
     },
 
     created() {
-      this.$store.commit('toolbarTitulo', 'AgradeSER');
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
-      const relatosRef = userRef.collection('relatos').orderBy('createdAt', 'desc');
+      this.dbRefs.relatosRef = userRef.collection('relatos');
 
-      this.$bind('relatos', relatosRef);
+      this.loadRelatos();
     }
   }
 </script>
