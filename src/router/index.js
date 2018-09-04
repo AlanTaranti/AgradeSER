@@ -68,6 +68,11 @@ const router = new Router({
           name: 'caderno',
           component: Caderno,
         },
+        {
+          path: '/cadernos/:caderno/:filtro',
+          name: 'home',
+          component: Home,
+        },
       ],
     },
   ]
