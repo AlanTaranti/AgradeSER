@@ -96,8 +96,10 @@
         </v-combobox>
       </v-flex>
 
-      <!-- Salvar -->
-      <v-btn color="primary" v-on:click="salvarRelato">Salvar</v-btn>
+      <!-- FAB -->
+      <button-action
+        icone="fas fa-save"
+        @botao-clicado="salvarRelato"/>
 
     </div>
 
@@ -111,12 +113,16 @@
   import db from '../../main'
   import firebase from 'firebase'
   import store from '../../vuex/store';
+  import ButtonAction from '../../components/ButtonAction'
 
   moment.locale('pt-br');
 
   export default {
     name: "Relato",
     store: store,
+    components: {
+      ButtonAction,
+    },
     data: () => ({
       dbRefs: {
         relatosRef: null,
