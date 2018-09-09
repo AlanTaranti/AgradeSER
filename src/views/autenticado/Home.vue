@@ -3,7 +3,7 @@
     <template v-for="relato in relatos">
       <v-flex xs12>
         <relato-card class="mb-3" :id="relato.id" :titulo="relato.titulo" :conteudo="relato.conteudo"
-                     :data="relato.data.toDate()" :local="relato.local.nome"/>
+                     :data="relato.data.toDate()" :local="relato.local.nome" :relato="relato" :eh-lixeira="ehLixeira"/>
       </v-flex>
     </template>
 
@@ -32,6 +32,7 @@
     },
     data: () => ({
       relatos: [],
+      ehLixeira: false,
       dbRefs: {
         relatosRef: null,
       },
@@ -43,13 +44,22 @@
       },
 
       loadRelatos() {
+        this.ehLixeira = false;
         this.relatos = [];
         const caderno = this.$route.params.caderno;
         let ref = null;
 
         if (!caderno) {
-          this.$store.commit('toolbarTitulo', 'AgradeSER');
-          ref = this.dbRefs.relatosRef;
+          if (this.$route.path === '/home') {
+            this.$store.commit('toolbarTitulo', 'AgradeSER');
+            ref = this.dbRefs.relatosRef.where('lixeira', '==', false);
+          }
+          else if (this.$route.path === '/lixeira') {
+            this.$store.commit('toolbarTitulo', 'Lixeira');
+            this.ehLixeira = true;
+            ref = this.dbRefs.relatosRef.where('lixeira', '==', true);
+          }
+
         }
         else {
           const filtro = this.$route.params.filtro;
@@ -77,9 +87,7 @@
 
     watch: {
       $route(to, from) {
-        if (from.name === 'home') {
-          this.loadRelatos();
-        }
+        this.loadRelatos();
       }
     },
 

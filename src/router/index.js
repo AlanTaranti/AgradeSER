@@ -54,6 +54,11 @@ const router = new Router({
           component: Home,
         },
         {
+          path: '/lixeira',
+          name: 'lixeira',
+          component: Home,
+        },
+        {
           path: '/relato/',
           name: 'relato',
           component: Relato,
@@ -70,7 +75,7 @@ const router = new Router({
         },
         {
           path: '/cadernos/:caderno/:filtro',
-          name: 'home',
+          name: 'relato-caderno',
           component: Home,
         },
       ],

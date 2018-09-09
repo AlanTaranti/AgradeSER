@@ -9,16 +9,22 @@
 <template>
 
   <v-container fluid>
-    <v-dialog v-model="dialogRemover" max-width="290">
-      <v-card raised hover color="white" v-if="dialogRemover">
+    <v-dialog v-model="dialogQuestion.show" max-width="290">
+      <v-card raised hover color="white" v-if="dialogQuestion.show">
         <v-card-title primary-title>
-          <div v-if="titulo" class="headline grey--text text--darken-3">Tem certeza que você quer excluir o relato?</div>
+          <div v-if="titulo" class="headline grey--text text--darken-3">
+            {{dialogQuestion.titleText}}
+          </div>
         </v-card-title>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" flat="flat" @click.native="removerRelato()">Excluir</v-btn>
-          <v-btn color="success" flat="flat" @click.native="dialogRemover = false">Cancelar</v-btn>
+          <v-btn color="error" flat="flat" @click.native="dialogQuestion.actionButtonFunction()">
+            {{dialogQuestion.actionButtonText}}
+          </v-btn>
+          <v-btn color="success" flat="flat" @click.native="dialogQuestion.show = false">
+            {{dialogQuestion.cancelButtonText}}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,13 +85,20 @@
 
   export default {
     name: "RelatoCard",
-    props: ['id', 'titulo', 'conteudo', 'data', 'local'],
+    props: ['id', 'titulo', 'conteudo', 'data', 'local', 'relato', 'ehLixeira'],
     store: store,
     data: () => ({
+      relatoCopia: null,
       dbRefs: {
         relatosRef: null,
       },
-      dialogRemover: false,
+      dialogQuestion: {
+        show: false,
+        titleText: 'Deseja mover o relato para a lixeira?',
+        cancelButtonText: 'Cancelar',
+        actionButtonText: 'Lixeira',
+        actionButtonFunction: this.removerRelato,
+      },
       relatoBotoesRodape: [
         {
           acao: 'EDITAR',
@@ -112,33 +125,59 @@
 
     methods: {
 
-      removerRelato(){
+      removerRelato() {
         const self = this;
-        this.dbRefs.relatosRef.doc(this.id).delete()
+        this.relatoCopia['lixeira'] = true;
+        this.dialogQuestion.show = false;
+        this.dbRefs.relatosRef.doc(this.id).update(this.relatoCopia)
           .then(function () {
-            self.$store.commit('toasterMensagem', 'Relato removido com sucesso!');
+            self.$store.commit('toasterMensagem', 'Relato removido para a lixeira com sucesso!');
             self.$store.commit('toasterColor', 'success');
             self.$store.commit('toasterMostrar', true);
-            self.dialogRemover = false;
           })
           .catch(function () {
             self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
             self.$store.commit('toasterColor', 'error');
             self.$store.commit('toasterMostrar', true);
-            self.dialogRemover = false;
+          })
+      },
+
+      restaurarRelato() {
+        const self = this;
+        this.relatoCopia['lixeira'] = false;
+        this.dialogQuestion.show = false;
+        this.dbRefs.relatosRef.doc(this.id).update(this.relatoCopia)
+          .then(function () {
+            self.$store.commit('toasterMensagem', 'Relato restaurado com sucesso!');
+            self.$store.commit('toasterColor', 'success');
+            self.$store.commit('toasterMostrar', true);
+          })
+          .catch(function () {
+            self.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
+            self.$store.commit('toasterColor', 'error');
+            self.$store.commit('toasterMostrar', true);
           })
       },
 
       acaoRelato(acao) {
-        switch(acao) {
+        switch (acao) {
           case 'LER':
-            this.$router.push({ path: `/relato/${this.id}`});
+            this.$router.push({path: `/relato/${this.id}`});
             break;
           case 'EDITAR':
-            this.$router.push({ path: `/relato/${this.id}`});
+            this.$router.push({path: `/relato/${this.id}`});
             break;
           case 'EXCLUIR':
-            this.dialogRemover = true;
+            this.dialogQuestion.titleText = 'Deseja mover o relato para a lixeira?';
+            this.dialogQuestion.actionButtonText = 'Lixeira';
+            this.dialogQuestion.actionButtonFunction = this.removerRelato;
+            this.dialogQuestion.show = true;
+            break;
+          case 'RESTAURAR':
+            this.dialogQuestion.titleText = 'Deseja restaurar o relato?';
+            this.dialogQuestion.actionButtonText = 'Restaurar';
+            this.dialogQuestion.actionButtonFunction = this.restaurarRelato;
+            this.dialogQuestion.show = true;
             break;
           default:
             break;
@@ -147,10 +186,24 @@
 
     },
 
+    mounted() {
+      this.relatoCopia = this.relato;
+    },
+
     created() {
       /* Firestore References */
       const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
       this.dbRefs.relatosRef = userRef.collection('relatos');
+
+      if (this.ehLixeira) {
+        this.relatoBotoesRodape = [
+          {
+            acao: 'RESTAURAR',
+            icone: 'fas fa-undo',
+            desabilitado: false,
+          },
+        ]
+      }
     }
   }
 </script>

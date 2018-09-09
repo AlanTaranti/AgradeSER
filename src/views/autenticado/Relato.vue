@@ -144,6 +144,7 @@
         titulo: null,
         conteudo: null,
         pessoas: null,
+        lixeira: false,
         local: {
           id: null,
           nome: null,

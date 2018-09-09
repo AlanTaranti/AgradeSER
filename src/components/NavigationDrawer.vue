@@ -87,6 +87,7 @@
             {icone: 'place', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
           ],
         },
+        {icone: 'fas fa-trash-alt', texto: 'Lixeira', rota: {name: 'lixeira'}, desabilitar: false},
         /*{
           icone: 'fas fa-angle-up',
           iconeAlternativo: 'fas fa-angle-down',
