@@ -57,7 +57,6 @@
           </v-layout>
         </v-card>
 
-
       </v-flex>
 
       <!-- Título -->
@@ -76,14 +75,54 @@
         />
       </v-flex>
 
+      <!-- Emotion Picker -->
+      <v-flex xs12 sm6 md4>
+
+        <v-card flat :color="models.emotionPicker.color" style="width: 100%;">
+          <v-layout justify-space-between row fill-height>
+
+            <!-- Dia do Mês -->
+            <v-flex xs10>
+
+              <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;">
+                <h3 class="font-weight-medium" style="color: white;">{{models.emotionPicker.emotion}}</h3>
+              </v-card-text>
+            </v-flex>
+
+            <v-flex xs2>
+              <!--              <v-menu
+                              v-model="models.menuEmotionPicker"
+                              absolute
+                              offset-y
+                              lazy
+                              origin="center center"
+                              transition="scale-transition"
+                              style="width: 100%; height: 100%;">
+
+
+
+                            </v-menu>-->
+              <emotion-picker v-model="models.emotionPicker"></emotion-picker>
+
+              <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;"
+                           @click="models.emotionPicker.show = true">
+                <v-icon v-if="!models.menuDatePicker" color="white">fas fa-angle-down</v-icon>
+                <v-icon v-if="models.menuDatePicker" color="white">fas fa-angle-up</v-icon>
+              </v-card-text>
+
+            </v-flex>
+          </v-layout>
+        </v-card>
+
+      </v-flex>
+
       <!-- Localização -->
       <v-flex x12 sm6 md4>
         <v-text-field
           v-model="models.localizacao"
           placeholder="Local"
           prepend-icon="place"
-          ref="autocompleteLocation"
-        />
+          ref="autocompleteLocation"></v-text-field>
       </v-flex>
 
       <!-- Selecionar Pessoas -->
@@ -125,6 +164,7 @@
   import firebase from 'firebase'
   import store from '../../vuex/store';
   import ButtonAction from '../../components/ButtonAction'
+  import EmotionPicker from '../../components/EmotionPicker'
 
   moment.locale('pt-br');
 
@@ -133,6 +173,7 @@
     store: store,
     components: {
       ButtonAction,
+      EmotionPicker
     },
     data: () => ({
       dbRefs: {
@@ -144,7 +185,13 @@
       relatoCarregado: false,
       models: {
         datePicker: moment().format('YYYY-MM-DD'),
+        emotionPicker: {
+          emotion: 'Neutro',
+          color: '#9E9E9E',
+          show: false,
+        },
         menuDatePicker: false,
+        menuEmotionPicker: null,
         localizacao: '',
         pessoas: [],
       },
@@ -161,6 +208,10 @@
           nome: null,
           lat: null,
           lon: null,
+        },
+        emocao: {
+          emotion: null,
+          color: null,
         },
       }
     }),
@@ -207,6 +258,8 @@
         this.relato.pessoas = relato.data().pessoas;
 
         // Ajustes models
+        this.models.emotionPicker.emotion = relato.data().emocao ? relato.data().emocao.emotion : 'Neutro';
+        this.models.emotionPicker.color = relato.data().emocao ? relato.data().emocao.color : '#9E9E9E';
         this.models.localizacao = this.relato.local.nome;
         this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
         Object.keys(this.relato.pessoas).forEach(function (pessoa) {
@@ -251,10 +304,11 @@
 
         this.relato.data = this.dataParaSalvar;
         this.relato.pessoas = this.pessoasFormatadasParaFirebase();
+        this.relato.emocao.color = this.models.emotionPicker.color;
+        this.relato.emocao.emotion = this.models.emotionPicker.emotion;
         const self = this;
 
         const relatoId = this.$route.params.id;
-        console.log(this.relato);
         // Novo Relato
         if (!relatoId) {
           this.relato.createdAt = new Date();
