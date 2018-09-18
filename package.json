@@ -13,16 +13,20 @@
   },
   "dependencies": {
     "blueimp-md5": "^2.10.0",
-    "firebase": "^5.4.1",
+    "d3": "^5.7.0",
+    "d3-selection-multi": "^1.0.1",
+    "firebase": "^5.5.0",
+    "install": "^0.12.1",
     "moment": "^2.22.2",
+    "npm": "^6.4.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuefire": "^2.0.0-alpha.15",
-    "vuetify": "^1.1.14",
+    "vuetify": "^1.2.3",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.2.0",
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "autoprefixer": "^7.1.5",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -74,7 +78,7 @@
     "webpack": "^3.7.1",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-middleware": "^1.12.0",
-    "webpack-hot-middleware": "^2.19.1",
+    "webpack-hot-middleware": "^2.24.0",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
