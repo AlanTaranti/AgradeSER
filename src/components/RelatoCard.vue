@@ -29,7 +29,12 @@
       </v-card>
     </v-dialog>
 
-    <v-card raised hover color="white">
+    <v-card raised hover
+            style="border-left: 5px solid !important;"
+            :style="{
+              boxShadow: '0 3px 3px -2px rgba('+redEmoctionColor+', '+greenEmoctionColor+', '+blueEmoctionColor+', 0.2), 0 3px 4px 0 rgba('+0+', '+0+', '+0+', 0.14), 0 1px 8px 0 rgba('+redEmoctionColor+', '+greenEmoctionColor+', '+blueEmoctionColor+', 0.12)',
+              borderLeftColor: emotionColor,
+            }">
 
       <!-- Dados do Cartão -->
       <v-card-title primary-title>
@@ -121,6 +126,27 @@
       location: function (local) {
         return local;
       }
+    },
+
+    computed: {
+      emotionColor() {
+        return this.relato.emocao ? this.relato.emocao.color : '#9E9E9E';
+      },
+
+      redEmoctionColor() {
+        const color = this.emotionColor;
+        return parseInt(color[1] + color[2], 16);
+      },
+
+      greenEmoctionColor() {
+        const color = this.emotionColor;
+        return parseInt(color[3] + color[4], 16);
+      },
+
+      blueEmoctionColor() {
+        const color = this.emotionColor;
+        return parseInt(color[5] + color[6], 16);
+      },
     },
 
     methods: {
