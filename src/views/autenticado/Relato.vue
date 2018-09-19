@@ -85,7 +85,7 @@
             <v-flex xs10>
 
               <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;">
-                <h3 class="font-weight-medium" style="color: white;">{{models.emotionPicker.emotion}}</h3>
+                <h3 class="font-weight-medium" :style="{color: ['Alegria', 'Ansiedade'].indexOf(models.emotionPicker.emotion) === -1 ? 'white' : '#404040'}">{{models.emotionPicker.emotion}}</h3>
               </v-card-text>
             </v-flex>
 
