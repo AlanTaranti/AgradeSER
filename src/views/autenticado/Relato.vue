@@ -64,15 +64,14 @@
         <v-text-field
           placeholder="Título"
           v-model="relato.titulo"
-          single-line/>
+          single-line></v-text-field>
       </v-flex>
 
       <!-- Conteúdo -->
       <v-flex x12 sm6 md4>
         <v-textarea
           placeholder="Conteúdo"
-          v-model="relato.conteudo"
-        />
+          v-model="relato.conteudo"></v-textarea>
       </v-flex>
 
       <!-- Emotion Picker -->
