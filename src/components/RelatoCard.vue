@@ -155,7 +155,7 @@
         const self = this;
         this.relatoCopia['lixeira'] = true;
         this.dialogQuestion.show = false;
-        this.dbRefs.relatosRef.doc(this.id).update(this.relatoCopia)
+        this.dbRefs.relatosRef.doc(this.relato.id).update(this.relatoCopia)
           .then(function () {
             self.$store.commit('toasterMensagem', 'Relato removido para a lixeira com sucesso!');
             self.$store.commit('toasterColor', 'success');
@@ -172,7 +172,7 @@
         const self = this;
         this.relatoCopia['lixeira'] = false;
         this.dialogQuestion.show = false;
-        this.dbRefs.relatosRef.doc(this.id).update(this.relatoCopia)
+        this.dbRefs.relatosRef.doc(this.relato.id).update(this.relatoCopia)
           .then(function () {
             self.$store.commit('toasterMensagem', 'Relato restaurado com sucesso!');
             self.$store.commit('toasterColor', 'success');
