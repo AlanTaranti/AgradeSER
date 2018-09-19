@@ -9,8 +9,8 @@
 
     <!-- FAB -->
     <button-action
-      icone="fas fa-plus"
-      @botao-clicado="criarRelato"/>
+      :icone="fabIcon"
+      @botao-clicado="fabFunction"/>
   </v-container>
 </template>
 
@@ -38,7 +38,28 @@
       },
     }),
 
+    computed: {
+      fabIcon() {
+        if (this.$route.path === '/lixeira') {
+          return 'fas fa-trash-alt';
+        }
+        else {
+          return 'fas fa-plus';
+        }
+      },
+    },
+
     methods: {
+
+      fabFunction() {
+        if (this.$route.path === '/lixeira') {
+
+        }
+        else {
+          this.criarRelato();
+        }
+      },
+
       criarRelato() {
         this.$router.push({name: 'relato'});
       },
