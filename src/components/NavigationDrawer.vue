@@ -83,7 +83,12 @@
           model: false,
           filhos: [
             {icone: 'fas fa-user', texto: 'Pessoas', rota: {path: 'cadernos', urlparam: 'pessoas'}, desabilitar: false},
-            /*{icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},*/
+            {
+              icone: 'fas fa-heart',
+              texto: 'Emoções',
+              rota: {path: 'cadernos', urlparam: 'emocoes'},
+              desabilitar: false
+            },
             {icone: 'place', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
           ],
         },

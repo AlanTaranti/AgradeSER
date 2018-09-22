@@ -60,7 +60,30 @@
         });
       },
 
-      loadCadernos(){
+      getEmocoes() {
+        this.$store.commit('toolbarTitulo', 'Emoções');
+        const self = this;
+        const emocoes = [
+          'Alegria',
+          'Ansiedade',
+          'Confiança',
+          'Medo',
+          'Nojo',
+          'Raiva',
+          'Surpresa',
+          'Tristeza',
+        ];
+
+        emocoes.forEach(function (emocao) {
+          self.cards.push({
+            titulo: emocao,
+          })
+        })
+
+
+      },
+
+      loadCadernos() {
         this.cards = [];
         const caderno = this.$route.params.caderno;
         switch (caderno) {
@@ -72,8 +95,9 @@
             this.tipo = 'local';
             this.getLocalizacoes();
             break;
-          case 'tags':
-            this.tipo = 'tags';
+          case 'emocoes':
+            this.tipo = 'emocoes';
+            this.getEmocoes();
             break;
           default:
             break;
@@ -81,9 +105,9 @@
       }
     },
 
-    watch:{
-      $route (to, from){
-        if (to.name === 'caderno' && to.params.caderno !== from.params.caderno){
+    watch: {
+      $route(to, from) {
+        if (to.name === 'caderno' && to.params.caderno !== from.params.caderno) {
           this.loadCadernos();
         }
       }

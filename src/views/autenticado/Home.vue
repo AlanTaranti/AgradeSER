@@ -123,7 +123,7 @@
         this.$router.push({name: 'relato'});
       },
 
-      inicializar(){
+      inicializar() {
         /* Firestore References */
         const userRef = db.collection('usuario').doc(firebase.auth().currentUser.uid);
         this.dbRefs.relatosRef = userRef.collection('relatos');
@@ -156,18 +156,23 @@
 
           const filtroDecodificado = atob(filtro);
 
-          if (caderno !== 'local') {
+          if (caderno === 'pessoas') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
 
             ref = this.dbRefs.relatosRef.where([caderno, filtroDecodificado].join('.'), '==', true);
           }
-          else {
+          else if (caderno === 'emocoes') {
+            this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
+
+            ref = this.dbRefs.relatosRef.where('emocao.emotion', '==', filtroDecodificado);
+          }
+          else if (caderno === 'local') {
             this.$store.commit('toolbarTitulo', filtroDecodificado);
             ref = this.dbRefs.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
           }
         }
 
-        ref.orderBy('createdAt', 'desc');
+        ref.orderBy('data', 'desc');
 
         this.$bind('relatos', ref);
       }
