@@ -84,23 +84,13 @@
             <v-flex xs10>
 
               <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;">
-                <h3 class="font-weight-medium" :style="{color: ['Alegria', 'Ansiedade'].indexOf(models.emotionPicker.emotion) === -1 ? 'white' : '#404040'}">{{models.emotionPicker.emotion}}</h3>
+                <h3 class="font-weight-medium"
+                    :style="{color: ['Alegria', 'Ansiedade'].indexOf(models.emotionPicker.emotion) === -1 ? 'white' : '#404040'}">
+                  {{models.emotionPicker.emotion}}</h3>
               </v-card-text>
             </v-flex>
 
             <v-flex xs2>
-              <!--              <v-menu
-                              v-model="models.menuEmotionPicker"
-                              absolute
-                              offset-y
-                              lazy
-                              origin="center center"
-                              transition="scale-transition"
-                              style="width: 100%; height: 100%;">
-
-
-
-                            </v-menu>-->
               <emotion-picker v-model="models.emotionPicker"></emotion-picker>
 
               <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;"
@@ -285,18 +275,45 @@
         this.$router.push({name: 'home'});
       },
 
-      mostrarToasterAtualizarERedirectHome() {
-        this.$store.commit('toasterMensagem', 'Relato atualizado com sucesso!');
-        this.$store.commit('toasterColor', 'success');
-        this.$store.commit('toasterMostrar', true);
-        this.$router.push({name: 'home'});
-      },
-
       mostrarToasterErro() {
         this.$store.commit('toasterMensagem', 'Tente novamente mais tarde');
         this.$store.commit('toasterColor', 'error');
         this.$store.commit('toasterMostrar', true);
         this.$router.push({name: 'home'});
+      },
+
+      aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade){
+        if (iteracao === quantidade){
+          this.mostrarToasterSalvarERedirectHome()
+        }
+      },
+
+      salvarMetadadosEMostrarMensagem(){
+        const self = this;
+
+        const quantidade = self.relato.pessoas.length + self.relato.local.id ? 1 : 0;
+        let iteracao = 0;
+
+        if (quantidade === 0){
+          self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
+        }
+
+        if (self.relato.local.id){
+          self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
+            .then(function () {
+              iteracao++;
+              self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
+            })
+        }
+        if (self.relato.pessoas.length){
+          Object.keys(self.relato.pessoas).forEach(function (key) {
+            self.dbRefs.pessoasRef.doc(md5(key)).set({nome: key})
+              .then(function () {
+                iteracao++;
+                self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
+              });
+          });
+        }
       },
 
       salvarRelato() {
@@ -313,13 +330,7 @@
           this.relato.createdAt = new Date();
           this.dbRefs.relatosRef.add(this.relato)
             .then(function () {
-              self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
-                .then(function () {
-                  Object.keys(self.relato.pessoas).forEach(function (key) {
-                    self.dbRefs.pessoasRef.doc(md5(key)).set({nome: key});
-                  });
-                  self.mostrarToasterSalvarERedirectHome()
-                });
+              self.salvarMetadadosEMostrarMensagem();
             })
             .catch((error) => {
               console.error('Erro ao adicionar um novo relato', error);
@@ -330,10 +341,7 @@
         else {
           this.dbRefs.relatosRef.doc(relatoId).update(this.relato)
             .then(function () {
-              self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
-                .then(function () {
-                  self.mostrarToasterAtualizarERedirectHome()
-                });
+              self.salvarMetadadosEMostrarMensagem();
             })
             .catch(function (error) {
               console.error('Erro ao adicionar um novo relato', error);
