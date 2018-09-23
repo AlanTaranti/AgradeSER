@@ -285,12 +285,16 @@
         this.models.emotionPicker.color = relato.data().emocao ? relato.data().emocao.color : '#9E9E9E';
         this.models.localizacao = this.relato.local.nome;
         this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
-        Object.keys(this.relato.pessoas).forEach(function (pessoa) {
-          self.models.pessoas.push(pessoa);
-        });
-        Object.keys(this.relato.tags).forEach(function (tag) {
-          self.models.tags.push(tag);
-        });
+        if (this.relato.pessoas) {
+          Object.keys(this.relato.pessoas).forEach(function (pessoa) {
+            self.models.pessoas.push(pessoa);
+          });
+        }
+        if (this.relato.tags) {
+          Object.keys(this.relato.tags).forEach(function (tag) {
+            self.models.tags.push(tag);
+          });
+        }
 
         // Mostrar relato
         this.relatoCarregado = true;
