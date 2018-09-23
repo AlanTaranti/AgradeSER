@@ -157,7 +157,7 @@
         this.dialogQuestion.show = false;
         this.dbRefs.relatosRef.doc(this.relato.id).update(this.relatoCopia)
           .then(function () {
-            self.$store.commit('toasterMensagem', 'Relato removido para a lixeira com sucesso!');
+            self.$store.commit('toasterMensagem', 'Relato movido para a lixeira com sucesso!');
             self.$store.commit('toasterColor', 'success');
             self.$store.commit('toasterMostrar', true);
           })
