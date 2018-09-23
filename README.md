@@ -1,4 +1,4 @@
-# agradeser
+# AgradeSER
 
 > Sistema web para a prática de gratitude writing
 

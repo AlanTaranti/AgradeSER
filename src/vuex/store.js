@@ -13,7 +13,13 @@ const store = new Vuex.Store({
       drawerBreakpointEmTelaGrande: null
     },
     toolbar: {
+      toolbarTitulo: 'AgradeSER',
       toolbarIconeEsquerdaClicado: false
+    },
+    toaster: {
+      toasterMostrar: false,
+      toasterMensagem: '',
+      toasterColor: 'primary',
     }
   },
 
@@ -21,6 +27,10 @@ const store = new Vuex.Store({
     drawerMostrar: state => state.navigation.drawerMostrar,
     drawerBreakpointEmTelaGrande: state => state.layout.drawerBreakpointEmTelaGrande,
     toolbarIconeEsquerdaClicado: state => state.toolbar.toolbarIconeEsquerdaClicado,
+    toolbarTitulo: state => state.toolbar.toolbarTitulo,
+    toasterMostrar: state => state.toaster.toasterMostrar,
+    toasterMensagem: state => state.toaster.toasterMensagem,
+    toasterColor: state => state.toaster.toasterColor,
   },
 
   mutations: {
@@ -35,7 +45,19 @@ const store = new Vuex.Store({
     },
     toolbarIconeEsquerdaClicado: (state, toolbarIconeEsquerdaClicado) => {
       state.toolbar.toolbarIconeEsquerdaClicado = toolbarIconeEsquerdaClicado;
-    }
+    },
+    toolbarTitulo: (state, toolbarTitulo) => {
+      state.toolbar.toolbarTitulo = toolbarTitulo;
+    },
+    toasterMostrar: (state, toasterMostrar) => {
+      state.toaster.toasterMostrar = toasterMostrar;
+    },
+    toasterMensagem: (state, toasterMensagem) => {
+      state.toaster.toasterMensagem = toasterMensagem;
+    },
+    toasterColor: (state, toasterColor) => {
+      state.toaster.toasterColor = toasterColor;
+    },
   },
 });
 

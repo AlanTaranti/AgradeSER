@@ -75,19 +75,26 @@
     data: () => ({
       drawerItens: [
         {cabecalho: 'Relatos'},
-        {icone: 'fas fa-book', texto: 'Todos os relatos', rota: 'home', desabilitar: false},
+        {icone: 'fas fa-book', texto: 'Todos os relatos', rota: {name: 'home'}, desabilitar: false},
         {
           icone: 'fas fa-angle-up',
           iconeAlternativo: 'fas fa-angle-down',
           texto: 'Cadernos',
           model: false,
           filhos: [
-            {icone: 'fas fa-user', texto: 'Pessoas', rota: 'people', desabilitar: true},
-            {icone: 'fas fa-heart', texto: 'Emoções', rota: 'emotions', desabilitar: true},
-            {icone: 'place', texto: 'Locais', rota: 'places', desabilitar: true},
+            {icone: 'fas fa-user', texto: 'Pessoas', rota: {path: 'cadernos', urlparam: 'pessoas'}, desabilitar: false},
+            {
+              icone: 'fas fa-heart',
+              texto: 'Emoções',
+              rota: {path: 'cadernos', urlparam: 'emocoes'},
+              desabilitar: false
+            },
+            {icone: 'fas fa-map-marker-alt', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
+            {icone: 'fas fa-tag', texto: 'Tags', rota: {path: 'cadernos', urlparam: 'tags'}, desabilitar: false},
           ],
         },
-        {
+        {icone: 'fas fa-trash-alt', texto: 'Lixeira', rota: {name: 'lixeira'}, desabilitar: false},
+        /*{
           icone: 'fas fa-angle-up',
           iconeAlternativo: 'fas fa-angle-down',
           texto: 'Tags',
@@ -95,10 +102,10 @@
           filhos: [
             {icone: 'add', texto: 'Adicionar', id: 'tag_add', desabilitar: true},
           ],
-        },
+        },*/
         {cabecalho: 'AgradeSER'},
-        {icone: 'fas fa-cog', texto: 'Configurações', id: 'settings', desabilitar: true},
-        {icone: 'fas fa-comment-alt', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},
+        /*{icone: 'fas fa-cog', texto: 'Configurações', id: 'settings', desabilitar: true},*/
+        /*{icone: 'fas fa-comment-alt', texto: 'Enviar feedback', id: 'feedback', desabilitar: true},*/
         {icone: 'fas fa-sign-out-alt', texto: 'Sair', id: 'sair', desabilitar: false, action: 'logout'},
       ],
     }),
@@ -108,30 +115,37 @@
         set(drawerMostrar) {
           this.$store.commit('drawerMostrar', drawerMostrar);
         },
-        get(){
+        get() {
           return this.$store.getters.drawerMostrar;
         }
       }
     },
 
     methods: {
-      logout(){
+      logout() {
         firebase.auth().signOut().then(() => {
           this.$router.push({'name': 'login'});
         })
       },
 
-      onClickItemMenu(item){
-        if (item.desabilitar){
+      onClickItemMenu(item) {
+        if (item.desabilitar) {
           return
         }
 
-        if (item['action']){
+        if (item['action']) {
           this[item.action]();
         }
 
-        if (item['rota']){
-          this.$router.push({'name': item.rota});
+        if (item['rota']) {
+
+          if (item.rota.name) {
+            this.$router.push({'name': item.rota.name});
+          }
+          else if (item.rota.path && item.rota.urlparam) {
+            this.$router.push({path: `/${item.rota.path}/${item.rota.urlparam}`});
+          }
+
         }
       }
     },

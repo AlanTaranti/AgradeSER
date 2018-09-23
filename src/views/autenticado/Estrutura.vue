@@ -11,7 +11,10 @@
     <navigation-drawer/>
     <toolbar/>
     <v-content>
+      <!-- Telas -->
       <router-view/>
+      <!-- Toaster-->
+      <toaster/>
     </v-content>
   </v-container>
 </template>
@@ -20,6 +23,7 @@
 
   import Toolbar from '../../components/Toolbar';
   import NavigationDrawer from '../../components/NavigationDrawer';
+  import Toaster from '../../components/Toaster';
 
 
   export default {
@@ -27,6 +31,7 @@
     components: {
       Toolbar,
       NavigationDrawer,
+      Toaster,
     },
 
   };

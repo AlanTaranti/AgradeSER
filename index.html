@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>agradeser</title>
+  <title>AgradeSER</title>
   <link rel="icon" type="image/png" sizes="32x32"
         href="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16"
@@ -13,16 +13,16 @@
   <link rel="shortcut icon" href="/static/img/icons/favicon.ico"><![endif]-->
   <!-- Add to home screen for Android and modern mobile browsers -->
   <link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>static/manifest.json">
-  <meta name="theme-color" content="#4DBA87">
+  <meta name="theme-color" content="#F98443">
 
   <!-- Add to home screen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="agradeser">
+  <meta name="apple-mobile-web-app-title" content="AgradeSER">
   <link rel="apple-touch-icon"
         href="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/apple-touch-icon-152x152.png">
   <link rel="mask-icon" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/safari-pinned-tab.svg"
-        color="#4DBA87">
+        color="#F98443">
   <!-- Add to home screen for Windows -->
   <meta name="msapplication-TileImage"
         content="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/msapplication-icon-144x144.png">
@@ -33,7 +33,7 @@
   <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>"
         as="<%= file.match(/\.css$/)?'style':'script' %>">
   <% }}} %>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons|Roboto+Mono' rel="stylesheet">
 </head>
 <body>
 <noscript>
@@ -43,5 +43,6 @@
 <!-- Todo: only include in production -->
 <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
 <!-- built files will be auto injected -->
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCGSQVc_sqqRjNA8G1njntiYHDEsRUVGoM&libraries=places"></script>
 </body>
 </html>
