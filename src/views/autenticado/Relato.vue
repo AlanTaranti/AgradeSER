@@ -404,8 +404,6 @@
       },
 
       inicializarEscrita() {
-        this.coletarLocalizacaoUsuario();
-
         // Adicionado autocompletar de Localização
         let autocompleteLocation = this.$refs.autocompleteLocation.$refs.input;
         const google = window.google;
@@ -414,7 +412,6 @@
           {
             types: ['geocode'],
             language: ['pt-BR'],
-            location: this.localizacaoUsuario,
             radius: 1000
           }
         );
