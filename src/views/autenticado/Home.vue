@@ -170,6 +170,10 @@
             this.$store.commit('toolbarTitulo', filtroDecodificado);
             ref = this.dbRefs.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
           }
+          else if (caderno === 'tags') {
+            this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
+            ref = this.dbRefs.relatosRef.where(['tags', filtroDecodificado].join('.'), '==', true);
+          }
         }
 
         ref.orderBy('data', 'desc');

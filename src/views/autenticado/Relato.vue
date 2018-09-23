@@ -110,7 +110,7 @@
         <v-text-field
           v-model="models.localizacao"
           placeholder="Local"
-          prepend-icon="place"
+          prepend-icon="fas fa-map-marker-alt"
           ref="autocompleteLocation"></v-text-field>
       </v-flex>
 
@@ -120,16 +120,42 @@
           placeholder="Quem estava com você?"
           chips
           multiple
-          prepend-icon="person"
+          prepend-icon="fas fa-user"
           append-icon=""
           v-model="models.pessoas"
           style="text-transform: capitalize;">
           <template slot="selection" slot-scope="data">
             <v-chip
-              close
               @input="pessoaRemover(data.item)"
               :selected="data.selected">
-              <strong>{{ data.item }}</strong>&nbsp;
+              <v-avatar
+                class="accent white--text"
+                v-text="data.item.slice(0, 1).toUpperCase()">
+              </v-avatar>
+              <strong>{{ data.item }}</strong>
+            </v-chip>
+          </template>
+        </v-combobox>
+      </v-flex>
+
+      <!-- Selecionar Tags -->
+      <v-flex xs12 sm6 md4>
+        <v-combobox
+          placeholder="Tags"
+          chips
+          multiple
+          prepend-icon="fas fa-tag"
+          append-icon=""
+          v-model="models.tags">
+          <template slot="selection" slot-scope="data">
+            <v-chip
+              @input="tagRemover(data.item)"
+              :selected="data.selected">
+              <v-avatar
+                class="accent white--text"
+                v-text="data.item.slice(0, 1).toUpperCase()">
+              </v-avatar>
+              <strong>{{ data.item }}</strong>
             </v-chip>
           </template>
         </v-combobox>
@@ -183,6 +209,7 @@
         menuEmotionPicker: null,
         localizacao: '',
         pessoas: [],
+        tags: [],
       },
       localizacaoUsuario: '',
       relato: {
@@ -191,6 +218,7 @@
         titulo: null,
         conteudo: null,
         pessoas: null,
+        tags: null,
         lixeira: false,
         local: {
           id: null,
@@ -227,6 +255,11 @@
         this.relato.pessoas = [...this.relato.pessoas];
       },
 
+      tagRemover(item) {
+        this.relato.tags.splice(this.relato.tags.indexOf(item), 1);
+        this.relato.tags = [...this.relato.tags];
+      },
+
       setPlace(place) {
         this.models.localizacao = place.name;
         this.relato.local.id = place.place_id;
@@ -245,6 +278,7 @@
         this.relato.local = relato.data().local;
         this.relato.createdAt = relato.data().createdAt;
         this.relato.pessoas = relato.data().pessoas;
+        this.relato.tags = relato.data().tags;
 
         // Ajustes models
         this.models.emotionPicker.emotion = relato.data().emocao ? relato.data().emocao.emotion : 'Neutro';
@@ -253,6 +287,9 @@
         this.models.datePicker = moment(this.relato.data.toDate()).format('YYYY-MM-DD');
         Object.keys(this.relato.pessoas).forEach(function (pessoa) {
           self.models.pessoas.push(pessoa);
+        });
+        Object.keys(this.relato.tags).forEach(function (tag) {
+          self.models.tags.push(tag);
         });
 
         // Mostrar relato
@@ -282,32 +319,46 @@
         this.$router.push({name: 'home'});
       },
 
-      aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade){
-        if (iteracao === quantidade){
+      aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade) {
+        if (iteracao === quantidade) {
           this.mostrarToasterSalvarERedirectHome()
         }
       },
 
-      salvarMetadadosEMostrarMensagem(){
-        const self = this;
+      salvarMetadadosEMostrarMensagem() {
 
-        const quantidade = self.relato.pessoas.length + self.relato.local.id ? 1 : 0;
+        const quantidadeLocal = this.relato.local.id ? 1 : 0;
+
+        const quantidade = this.models.pessoas.length + this.models.tags.length + quantidadeLocal;
         let iteracao = 0;
 
-        if (quantidade === 0){
+        const self = this;
+
+        if (quantidade === 0) {
           self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
         }
 
-        if (self.relato.local.id){
+        if (self.relato.local.id) {
           self.dbRefs.localizacoesRef.doc(self.relato.local.id).set(self.relato.local)
             .then(function () {
               iteracao++;
               self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
             })
         }
-        if (self.relato.pessoas.length){
+
+        if (self.models.pessoas.length) {
           Object.keys(self.relato.pessoas).forEach(function (key) {
             self.dbRefs.pessoasRef.doc(md5(key)).set({nome: key})
+              .then(function () {
+                iteracao++;
+                self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
+              });
+          });
+        }
+
+        if (self.models.tags.length) {
+          Object.keys(self.relato.tags).forEach(function (key) {
+            self.dbRefs.tagsRef.doc(md5(key)).set({nome: key})
               .then(function () {
                 iteracao++;
                 self.aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade);
@@ -320,6 +371,7 @@
 
         this.relato.data = this.dataParaSalvar;
         this.relato.pessoas = this.pessoasFormatadasParaFirebase();
+        this.relato.tags = this.tagsFormatadasParaFirebase();
         this.relato.emocao.color = this.models.emotionPicker.color;
         this.relato.emocao.emotion = this.models.emotionPicker.emotion;
         const self = this;
@@ -391,6 +443,16 @@
           });
           const pessoaCapitalizada = pessoaSplited.join(' ');
           formatado[pessoaCapitalizada] = true;
+        });
+
+        return formatado;
+      },
+
+      tagsFormatadasParaFirebase() {
+        let formatado = {};
+
+        this.models.tags.forEach(function (tag) {
+          formatado[tag] = true;
         });
 
         return formatado;

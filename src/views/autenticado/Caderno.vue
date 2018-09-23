@@ -47,6 +47,19 @@
         });
       },
 
+      getTags() {
+        this.$store.commit('toolbarTitulo', 'Tags');
+        const self = this;
+        this.dbRefs.tagsRef.orderBy('nome').get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            const tag = doc.data();
+            self.cards.push({
+              titulo: tag.nome,
+            })
+          })
+        });
+      },
+
       getLocalizacoes() {
         this.$store.commit('toolbarTitulo', 'Localizações');
         const self = this;
@@ -98,6 +111,10 @@
           case 'emocoes':
             this.tipo = 'emocoes';
             this.getEmocoes();
+            break;
+          case 'tags':
+            this.tipo = 'tags';
+            this.getTags();
             break;
           default:
             break;

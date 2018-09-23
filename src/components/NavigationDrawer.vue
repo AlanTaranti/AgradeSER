@@ -89,7 +89,8 @@
               rota: {path: 'cadernos', urlparam: 'emocoes'},
               desabilitar: false
             },
-            {icone: 'place', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
+            {icone: 'fas fa-map-marker-alt', texto: 'Locais', rota: {path: 'cadernos', urlparam: 'localizacoes'}, desabilitar: false},
+            {icone: 'fas fa-tag', texto: 'Tags', rota: {path: 'cadernos', urlparam: 'tags'}, desabilitar: false},
           ],
         },
         {icone: 'fas fa-trash-alt', texto: 'Lixeira', rota: {name: 'lixeira'}, desabilitar: false},
