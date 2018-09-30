@@ -156,23 +156,25 @@
 
           const filtroDecodificado = atob(filtro);
 
+          ref = this.dbRefs.relatosRef.where('lixeira', '==', false);
+
           if (caderno === 'pessoas') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
 
-            ref = this.dbRefs.relatosRef.where([caderno, filtroDecodificado].join('.'), '==', true);
+            ref = ref.where([caderno, filtroDecodificado].join('.'), '==', true);
           }
           else if (caderno === 'emocoes') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
 
-            ref = this.dbRefs.relatosRef.where('emocao.emotion', '==', filtroDecodificado);
+            ref = ref.relatosRef.where('emocao.emotion', '==', filtroDecodificado);
           }
           else if (caderno === 'local') {
             this.$store.commit('toolbarTitulo', filtroDecodificado);
-            ref = this.dbRefs.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
+            ref = ref.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
           }
           else if (caderno === 'tags') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
-            ref = this.dbRefs.relatosRef.where(['tags', filtroDecodificado].join('.'), '==', true);
+            ref = ref.relatosRef.where(['tags', filtroDecodificado].join('.'), '==', true);
           }
         }
 
