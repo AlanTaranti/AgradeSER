@@ -116,7 +116,7 @@
           this.$store.commit('drawerMostrar', drawerMostrar);
         },
         get() {
-          return this.$store.getters.drawerMostrar;
+          return this.$store.getters.drawerMostrar || this.$vuetify.breakpoint.width >= this.$store.getters.drawerBreakpointEmTelaGrande;
         }
       }
     },
