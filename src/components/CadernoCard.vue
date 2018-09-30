@@ -8,7 +8,7 @@
 
 <template>
 
-  <v-container fluid>
+  <v-container fluid @click="acaoCard(cadernoAcaoPrincipal.acao)">
     <v-dialog v-model="dialogRemover" max-width="290">
       <v-card raised hover color="white" v-if="dialogRemover">
         <v-card-title primary-title>
@@ -70,6 +70,9 @@
     store: store,
     data: () => ({
       dialogRemover: false,
+      cadernoAcaoPrincipal: {
+        acao: 'LER',
+      },
       relatoBotoesRodape: [
         {
           acao: 'LER',
