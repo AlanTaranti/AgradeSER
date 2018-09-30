@@ -14,48 +14,50 @@
       <!-- Date Picker -->
       <v-flex xs12 sm6 md4>
 
-        <v-card slot="activator" style="width: 100%;">
-          <v-layout justify-space-between row fill-height>
+        <v-menu
+          v-model="models.menuDatePicker"
+          absolute
+          offset-y
+          lazy
+          origin="center center"
+          transition="scale-transition"
+          style="width: 100%; height: 100%;">
 
-            <!-- Dia do Mês -->
-            <v-flex xs3>
-              <v-card-text align-center class="center-content-vh" style="height: 100%;">
-                <span>{{ diaDoRelato }}</span>
-              </v-card-text>
-            </v-flex>
+          <v-date-picker v-model="models.datePicker"></v-date-picker>
 
-            <v-flex xs7>
-              <v-card-text class="text-xs-left">
-                <!-- Dia da Semana-->
-                <span class="text-xs-left">{{ diaDaSemanaDoRelato }}</span>
-                <br>
-                <!-- Mẽs e Ano -->
-                <span class="text-xs-left">{{ mesEAnoDoRelato  }}</span>
-              </v-card-text>
-            </v-flex>
+          <v-card slot="activator" style="width: 100%;">
+            <v-layout justify-space-between row fill-height>
 
-            <v-flex xs2>
-              <v-menu
-                v-model="models.menuDatePicker"
-                absolute
-                offset-y
-                lazy
-                origin="center center"
-                transition="scale-transition"
-                style="width: 100%; height: 100%;">
+              <!-- Dia do Mês -->
+              <v-flex xs3>
+                <v-card-text align-center class="center-content-vh" style="height: 100%;">
+                  <span>{{ diaDoRelato }}</span>
+                </v-card-text>
+              </v-flex>
 
-                <v-date-picker v-model="models.datePicker"></v-date-picker>
+              <v-flex xs7>
+                <v-card-text class="text-xs-left">
+                  <!-- Dia da Semana-->
+                  <span class="text-xs-left">{{ diaDaSemanaDoRelato }}</span>
+                  <br>
+                  <!-- Mẽs e Ano -->
+                  <span class="text-xs-left">{{ mesEAnoDoRelato  }}</span>
+                </v-card-text>
+              </v-flex>
 
-                <v-card-text class="center-content-vh" style="height: 100%;" slot="activator">
+              <v-flex xs2>
+
+                <v-card-text class="center-content-vh" style="height: 100%;">
                   <v-icon v-if="!models.menuDatePicker">fas fa-angle-down</v-icon>
                   <v-icon v-if="models.menuDatePicker">fas fa-angle-up</v-icon>
                 </v-card-text>
 
-              </v-menu>
+              </v-flex>
+            </v-layout>
+          </v-card>
 
-            </v-flex>
-          </v-layout>
-        </v-card>
+        </v-menu>
+
 
       </v-flex>
 
@@ -75,7 +77,8 @@
       </v-flex>
 
       <!-- Emotion Picker -->
-      <v-flex xs12 sm6 md4>
+      <emotion-picker v-model="models.emotionPicker"></emotion-picker>
+      <v-flex xs12 sm6 md4 @click="models.emotionPicker.show = true">
 
         <v-card flat :color="models.emotionPicker.color" style="width: 100%;">
           <v-layout justify-space-between row fill-height>
@@ -91,14 +94,10 @@
             </v-flex>
 
             <v-flex xs2>
-              <emotion-picker v-model="models.emotionPicker"></emotion-picker>
-
-              <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;"
-                           @click="models.emotionPicker.show = true">
+              <v-card-text class="center-content-vh" style="height: 100%; padding: 5px;">
                 <v-icon v-if="!models.menuDatePicker" color="white">fas fa-angle-down</v-icon>
                 <v-icon v-if="models.menuDatePicker" color="white">fas fa-angle-up</v-icon>
               </v-card-text>
-
             </v-flex>
           </v-layout>
         </v-card>
