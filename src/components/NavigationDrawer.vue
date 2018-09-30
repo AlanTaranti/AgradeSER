@@ -139,6 +139,8 @@
 
         if (item['rota']) {
 
+          this.drawerMostrar = false;
+
           if (item.rota.name) {
             this.$router.push({'name': item.rota.name});
           }
