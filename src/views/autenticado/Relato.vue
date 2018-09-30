@@ -163,6 +163,7 @@
       <!-- FAB -->
       <button-action
         icone="fas fa-save"
+        :loading="status.salvando"
         @botao-clicado="salvarRelato"/>
 
     </div>
@@ -195,6 +196,9 @@
         localizacoesRef: null,
         pessoasRef: null,
         tagsRef: null,
+      },
+      status: {
+        salvando: false,
       },
       relatoCarregado: false,
       models: {
@@ -324,7 +328,8 @@
 
       aguardarEmostrarToasterSalvarERedirectHome(iteracao, quantidade) {
         if (iteracao === quantidade) {
-          this.mostrarToasterSalvarERedirectHome()
+          this.mostrarToasterSalvarERedirectHome();
+          this.status.salvando = false;
         }
       },
 
@@ -371,6 +376,8 @@
       },
 
       salvarRelato() {
+
+        this.status.salvando = true;
 
         this.relato.data = this.dataParaSalvar;
         this.relato.pessoas = this.pessoasFormatadasParaFirebase();

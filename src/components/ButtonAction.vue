@@ -7,17 +7,24 @@
     fab
     color="accent"
     @click="botaoClicado">
-    <v-icon>{{ icone }}</v-icon>
+    <v-icon v-if="!loading">{{ icone }}</v-icon>
+    <v-progress-circular
+      v-if="loading"
+      indeterminate
+      color="white">
+    </v-progress-circular>
   </v-btn>
 </template>
 
 <script>
   export default {
     name: 'button-action',
-    props: ['icone'],
+    props: ['icone', 'loading'],
     methods: {
       botaoClicado() {
-        this.$emit('botao-clicado');
+        if (!this.loading) {
+          this.$emit('botao-clicado');
+        }
       },
     },
   };
