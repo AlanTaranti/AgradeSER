@@ -6,7 +6,7 @@
         <v-container fluid fill-height>
           <v-layout align-center justify-space-around fill-height>
             <v-flex md6 style="padding-right: 12px;">
-              <img src="https://via.placeholder.com/200x200">
+              <img src="/static/img/logo_200x200.png">
             </v-flex>
             <v-flex md6 style="padding-left: 12px;">
               <!-- Logo -->
@@ -57,7 +57,7 @@
         <v-container fluid>
           <v-layout align-center justify-space-around column fill-height>
             <v-flex xs12>
-              <img src="https://via.placeholder.com/150x150">
+              <img src="/static/img/logo_150x150.png">
             </v-flex>
             <v-flex xs12 style="margin-top: 10px;">
               <!-- Logo -->
