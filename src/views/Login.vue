@@ -15,6 +15,7 @@
               <v-text-field
                 v-model="email"
                 type="email"
+                name="email"
                 placeholder="Email"
                 prepend-icon="fas fa-at"
                 required
@@ -24,6 +25,7 @@
               <!-- Senha -->
               <v-text-field
                 v-model="password"
+                name="password"
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="Senha"
                 prepend-icon="fas fa-key"
@@ -64,6 +66,7 @@
               <v-text-field
                 v-model="email"
                 type="email"
+                name="email"
                 placeholder="Email"
                 prepend-icon="fas fa-at"
                 required
@@ -73,6 +76,7 @@
               <!-- Senha -->
               <v-text-field
                 v-model="password"
+                name="password"
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="Senha"
                 prepend-icon="fas fa-key"
