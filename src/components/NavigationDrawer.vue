@@ -116,13 +116,14 @@
           this.$store.commit('drawerMostrar', drawerMostrar);
         },
         get() {
-          return this.$store.getters.drawerMostrar;
+          return this.$store.getters.drawerMostrar || this.$vuetify.breakpoint.width >= this.$store.getters.drawerBreakpointEmTelaGrande;
         }
       }
     },
 
     methods: {
       logout() {
+        this.drawerMostrar = false;
         firebase.auth().signOut().then(() => {
           this.$router.push({'name': 'login'});
         })
@@ -138,6 +139,8 @@
         }
 
         if (item['rota']) {
+
+          this.drawerMostrar = false;
 
           if (item.rota.name) {
             this.$router.push({'name': item.rota.name});
