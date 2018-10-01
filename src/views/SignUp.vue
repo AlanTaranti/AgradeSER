@@ -6,7 +6,7 @@
           <v-layout align-center justify-center column fill-height>
             <v-flex xs12 style="padding-left: 12px;">
               <!-- Imagem -->
-              <img src="https://via.placeholder.com/200x200">
+              <img src="/static/img/logo_200x200.png">
             </v-flex>
             <v-flex xs12 style="padding-left: 12px;">
               <!-- Logo Text -->
