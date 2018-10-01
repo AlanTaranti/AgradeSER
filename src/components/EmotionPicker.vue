@@ -1,8 +1,8 @@
 <template>
   <v-dialog
-    v-model="dialog"
-    height="dialogSize"
-    max-width="dialogSize">
+    :width="svgSize()"
+    :height="svgSize()"
+    v-model="dialog">
     <v-card>
       <div ref="container" id="container" style="padding: 0;">
 
@@ -40,10 +40,34 @@
         }
       },
 
+
+    },
+
+    mounted() {
+      this.modelo = this.value;
+      window.addEventListener('resize', this.onResize, {passive: true})
+    },
+
+    beforeDestroy() {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', this.onResize, {passive: true})
+      }
+    },
+
+    methods: {
+
+      svgSize: function () {
+        const larguraDialogo = this.dialogSize();
+        const margem = 24;
+
+        return larguraDialogo - 2 * margem;
+      },
+
       dialogSize: function () {
 
-        const larguraTela = window.innerWidth;
-        const alturaTela = window.innerHeight;
+        const larguraTela = window.innerWidth > 835 ? 835 : window.innerWidth;
+        const alturaTela = window.innerHeight > 835 ? 835 : window.innerHeight;
+
         const margem = 0;
 
         if (larguraTela > alturaTela) {
@@ -52,25 +76,11 @@
         else {
           return larguraTela > 360 ? larguraTela - margem : 360 - margem;
         }
-
-
       },
 
-      svgSize: function () {
-        const larguraDialogo = this.dialogSize;
-        const margem = 24;
-
-        return larguraDialogo - 2 * margem;
-      }
-
-
-    },
-
-    mounted() {
-      this.modelo = this.value;
-    },
-
-    methods: {
+      onResize() {
+        this.createChart();
+      },
 
       emocaoEscolhida(emotion) {
         this.modelo.emotion = emotion.name;
@@ -87,8 +97,8 @@
         this.$refs.container.innerHTML = '';
 
         // Extrair tamanho disponível
-        const totalWidth = this.svgSize;
-        const totalHeight = this.svgSize;
+        const totalWidth = this.svgSize();
+        const totalHeight = this.svgSize();
 
         const radius = totalWidth * .07 < 65 ? totalWidth * .07 : 65;
         // Definir margens

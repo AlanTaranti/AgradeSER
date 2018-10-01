@@ -166,15 +166,15 @@
           else if (caderno === 'emocoes') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
 
-            ref = ref.relatosRef.where('emocao.emotion', '==', filtroDecodificado);
+            ref = ref.where('emocao.emotion', '==', filtroDecodificado);
           }
           else if (caderno === 'local') {
             this.$store.commit('toolbarTitulo', filtroDecodificado);
-            ref = ref.relatosRef.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
+            ref = ref.where([caderno, 'nome'].join('.'), '==', filtroDecodificado);
           }
           else if (caderno === 'tags') {
             this.$store.commit('toolbarTitulo', [cadernoCapitalized, filtroDecodificado].join(' - '));
-            ref = ref.relatosRef.where(['tags', filtroDecodificado].join('.'), '==', true);
+            ref = ref.where(['tags', filtroDecodificado].join('.'), '==', true);
           }
         }
 
