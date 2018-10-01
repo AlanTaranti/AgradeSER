@@ -160,7 +160,24 @@
             this.$refs[f].validate(true)
           });
         }
-      }
+      },
+
+      onResize() {
+        this.criarBackground();
+      },
+
+      criarBackground() {
+        // Background
+        const colors = ["#ef5f6f", "efa65d", "#f85467", "#f8a554"];
+        const pattern = Trianglify({
+          width: window.innerWidth,
+          height: window.innerHeight,
+          x_colors: colors,
+          cell_size: 60
+        });
+        this.background = pattern.png();
+      },
+
     },
 
     computed: {
@@ -175,16 +192,18 @@
     },
 
     created() {
-      // Background
-      const colors = ["#ef5f6f", "efa65d", "#f85467", "#f8a554"];
-      const pattern = Trianglify({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        x_colors: colors,
-        cell_size: 60
-      });
-      this.background = pattern.png();
-    }
+      this.criarBackground();
+    },
+
+    beforeDestroy() {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', this.onResize, {passive: true})
+      }
+    },
+
+    mounted() {
+      window.addEventListener('resize', this.onResize, {passive: true})
+    },
   }
 </script>
 
