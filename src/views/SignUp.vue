@@ -20,6 +20,9 @@
                 type="email"
                 placeholder="Email"
                 prepend-icon="fas fa-at"
+                :rules="[rules.required, rules.email]"
+                ref="email"
+                required
               ></v-text-field>
               <!-- Senha -->
               <v-text-field
@@ -29,6 +32,9 @@
                 prepend-icon="fas fa-key"
                 :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                 @click:append="showPassword = !showPassword"
+                :rules="[rules.required, rules.min]"
+                ref="password"
+                required
               ></v-text-field>
               <br>
               <v-btn round block color="primary" dark v-on:click="signUp">Cadastre-se</v-btn>
@@ -65,6 +71,9 @@
                 type="email"
                 placeholder="Email"
                 prepend-icon="fas fa-at"
+                :rules="[rules.required, rules.email]"
+                ref="email2"
+                required
               ></v-text-field>
               <!-- Senha -->
               <v-text-field
@@ -74,6 +83,9 @@
                 prepend-icon="fas fa-key"
                 :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                 @click:append="showPassword = !showPassword"
+                :rules="[rules.required, rules.min]"
+                ref="password2"
+                required
               ></v-text-field>
               <br>
               <v-btn round block color="primary" dark v-on:click="signUp">Cadastre-se</v-btn>
@@ -101,20 +113,52 @@
     data: function () {
       return {
         email: '',
-        password: ''
+        password: '',
+        showPassword: false,
+        rules: {
+          required: value => !!value || 'Requerido.',
+          email: value => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            return pattern.test(value) || 'Email inválido.'
+          },
+          min: v => v.length >= 8 || 'Mínimo de 8 caracteres',
+        },
+        formHasErrors: false,
       }
     },
     methods: {
       signUp: function () {
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-          (user) => {
-            this.$router.push({name: 'home'});
-          },
-          (err) => {
-            alert('Oops. ' + err.message)
-          }
-        );
+
+        this.formHasErrors = false;
+
+        Object.keys(this.form).forEach(f => {
+          if (!this.form[f]) this.formHasErrors = true;
+          this.$refs[f].validate(true)
+        });
+
+        if (!this.formHasErrors) {
+          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+            () => {
+              this.$router.push({name: 'home'});
+            },
+            (err) => {
+              alert('Oops. ' + err.message)
+            }
+          );
+        }
+
       }
+    },
+
+    computed: {
+      form() {
+        return {
+          email: this.email,
+          email2: this.email,
+          password: this.password,
+          password2: this.password,
+        }
+      },
     },
 
     created() {
