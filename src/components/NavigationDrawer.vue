@@ -123,6 +123,7 @@
 
     methods: {
       logout() {
+        this.drawerMostrar = false;
         firebase.auth().signOut().then(() => {
           this.$router.push({'name': 'login'});
         })
