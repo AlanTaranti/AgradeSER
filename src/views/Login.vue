@@ -172,7 +172,7 @@
 
       criarBackground() {
         // Background
-        const colors = ["#ef5f6f", "efa65d", "#f85467", "#f8a554"];
+        const colors = ["#5d6eef", "a65def", "#5467f8", "#a654f8"];
         const pattern = Trianglify({
           width: window.innerWidth,
           height: window.innerHeight,

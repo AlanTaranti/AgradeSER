@@ -15,12 +15,11 @@ import colors from 'vuetify/es5/util/colors'
 Vue.use(Vuetify, {
   iconfont: 'fa',
   theme: {
-    primary: '#F98443',
-    secondary: colors.lightGreen.darken1,
-    accent: '#EF606F',
+    primary: colors.green.darken1,
+    secondary: colors.lightBlue,
+    accent: colors.lightBlue,
 
     background: '#FFFAFA',
-    background_primary_lighten: colors.lightGreen.lighten5,
 
     error: colors.red.lighten1,
     info: colors.lightBlue.lighten1,

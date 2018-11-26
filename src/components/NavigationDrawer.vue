@@ -4,7 +4,7 @@
     clipped
     app
     v-model="drawerMostrar"
-    color="background">
+    class="background">
     <v-list
       dense
       color="background">
